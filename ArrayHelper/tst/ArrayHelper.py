@@ -14,3 +14,5 @@ class ArrayHelper:
             return {key: value.clone() if have_clone(value) else arg(value) for key, value in arr.items()}
         elif isinstance(arr, (list, tuple)):
             return [value.clone() if have_clone(value) else arg(value) for value in arr]
+        elif isinstance(arr, str):
+            return {str(i): symbol for i, symbol in enumerate(arr)}
