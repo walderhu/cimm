@@ -83,8 +83,12 @@ class TestAddFunction(unittest.TestCase):
         obj = [
             [1, 2, [3, 4], [5, [6, 7], 8]],
             [[1, 2], [3, 4]],
+            'hello', 
+            (1, 2, 3, 4),
+            list('cimm'),
         ]
         self.assertTrue(all(map(testing, obj)))
+
 
 
 if __name__ == '__main__':
