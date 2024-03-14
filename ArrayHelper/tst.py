@@ -1,5 +1,5 @@
-    @staticmethod
-    def get(arr, property, value):
+  @staticmethod
+   def get(arr, property, value):
         for obj in arr:
             if obj.get(property) == value:
                 return obj
@@ -22,6 +22,7 @@
 
     @staticmethod
     def sort_by_atomic_number_desc(arr):
-        map = list(map(lambda e, i: {"index": i, "value": list(map(int, e["atomicNumber"].split(".")))}, arr, range(len(arr))))
+        map = list(map(lambda e, i: {"index": i, "value": list(
+            map(int, e["atomicNumber"].split(".")))}, arr, range(len(arr))))
         map.sort(key=lambda x: (len(x["value"]), x["value"]), reverse=True)
         return list(map(lambda e: arr[e["index"]], map))

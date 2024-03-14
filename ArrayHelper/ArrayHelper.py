@@ -45,7 +45,9 @@ class ArrayHelper:
         """
         string, elements = '', []
         for i in range(len(arr)):
-            if hasattr(arr[i], '__iter__'):
+            if isinstance(arr, str):
+                elements.append(arr[i])
+            elif hasattr(arr[i], '__iter__'):
                 elements.append(ArrayHelper.print(
                     arr[i], sep=',', beg='', end=''))
             else:
@@ -85,7 +87,7 @@ class ArrayHelper:
     #             if item.get(options['property']) == options['value']:
     #                 return True
     #     return False
-    
+
     @staticmethod
     def intersection(arrA, arrB):
         return [elem for elem in arrA if elem in arrB]
@@ -110,14 +112,13 @@ class ArrayHelper:
     @staticmethod
     def remove(arr, value):
         return [elem for elem in arr if elem != value]
-    
+
     @staticmethod
     def remove_unique(arr, value):
         clone = ArrayHelper.clone(arr)
         if value in clone:
             del clone[clone.index(value)]
         return clone
-    
 
     @staticmethod
     def remove_all(arrA, arrB):

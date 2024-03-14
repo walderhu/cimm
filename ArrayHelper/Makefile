@@ -19,3 +19,6 @@ clang:
 
 push: clean
 	@git add ../* && git commit && git push origin $(shell git rev-parse --abbrev-ref HEAD)
+
+main:
+	python3 main.py
