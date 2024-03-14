@@ -4,17 +4,15 @@ with open('ArrayHelper.js', 'r') as file:
     js_code = file.read()
 
 ctx = execjs.compile(js_code)
-arr = [1, 2, [1, 2, 3], 4, 5]
-
-# js = ctx.call("ArrayHelper.clone", arr)
-# py = ArrayHelper.ArrayHelper.clone(arr)
-
-
-def testing(arr): return ctx.call("ArrayHelper.clone",
-                                  arr) == ArrayHelper.ArrayHelper.clone(arr)
-
-
-check = 'hello'
-print(hasattr(check, '__iter__'))
-print(ctx.call("ArrayHelper.clone", check))
-print(ArrayHelper.ArrayHelper.clone(check))
+# arr = [1, 2, [1, 2, 3], 4, 5]
+obj = [
+    (1,),
+    'Cimm is cool laboratory'
+]
+arr =   obj[0]
+# print(ctx.call("ArrayHelper.equals", arr, arr))
+print(ArrayHelper.ArrayHelper.equals(arr, arr))
+# arrA = [1, 2, 3]
+# arr1 = sorted(True)
+# print(arr1)
+print(list('CIMM'))

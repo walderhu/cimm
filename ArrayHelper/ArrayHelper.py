@@ -19,3 +19,22 @@ class ArrayHelper:
             return [ArrayHelper.__get_clone_value(value) for value in arr]
         elif isinstance(arr, str):
             return {str(i): symbol for i, symbol in enumerate(arr)}
+
+    @staticmethod
+    def equals(arrA, arrB):
+        """
+        Returns a boolean value indicating whether two arrays contain the same elements.
+        Supports only one-dimensional, non-nested arrays.
+        """
+        if any([not hasattr(x, '__iter__') or isinstance(x, str) for x in (arrA, arrB)]):
+            raise TypeError
+        if len(arrA) != len(arrB):
+            return False
+        arr1, arr2 = sorted(arrA), sorted(arrB)
+        return all([arr1[i] == arr2[i] for i in range(len(arr1))])
+
+
+if __name__ == '__main__':
+    arr1 = [1, 2, 3]
+    arr2 = [1, 2, 3]
+    print(ArrayHelper.equals(arr1, arr2))
