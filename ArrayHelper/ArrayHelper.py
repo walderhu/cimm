@@ -1,15 +1,16 @@
+from typing import Any, Union
 class ArrayHelper:
     'A static class containing helper functions for array-related tasks.'
 
     @staticmethod
-    def __get_clone_value(value):
+    def __get_clone_value(value: Any) -> Any:
         'Returns a value, depending on the presence of a clone'
         if hasattr(value, 'clone') and callable(getattr(value, 'clone')):
             return value.clone()
         return value
 
     @staticmethod
-    def clone(arr: list):
+    def clone(arr: Union[list, dict, str]) -> Union[list, dict, str]:
         'Returns a clone of the object'
         if not hasattr(arr, '__iter__'):
             return {}
@@ -21,7 +22,7 @@ class ArrayHelper:
             return {str(i): symbol for i, symbol in enumerate(arr)}
 
     @staticmethod
-    def equals(arrA, arrB):
+    def equals(arrA: Union[list, tuple], arrB: Union[list, tuple]) -> bool:
         """
         Returns a boolean value indicating whether two arrays contain the same elements.
         Supports only one-dimensional, non-nested arrays.
