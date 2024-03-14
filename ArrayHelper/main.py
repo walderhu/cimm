@@ -4,13 +4,19 @@ with open('ArrayHelper.js', 'r') as file:
     js_code = file.read()
 
 ctx = execjs.compile(js_code)
-# arr = [1, 2, [1, 2, 3], 4, 5]
-obj1 = {
-    'hello': 1,
-    'denis': 'python'
-}
-print(ctx.call("ArrayHelper.equals", obj1, obj1))
-# print(ArrayHelper.ArrayHelper.equals(obj1, obj1))
-# arrA = [1, 2, 3]
-# arr1 = sorted(True)
-# print(arr1)
+
+obj = [
+            # [1, 2, 3],
+            [1, 2, [1, 2, 3], 4, 5],
+            # {'1': 'one', 'cimm': 'cool'},
+            # True,
+            # False,
+            # 1,
+            # 1.0,
+            # None,
+            # 'Cimm is cool laboratory'
+]
+x = obj[0]
+print(ctx.call("ArrayHelper.print", x))
+print(ArrayHelper.ArrayHelper.print(x))
+print(ctx.call("ArrayHelper.print", x) == ArrayHelper.ArrayHelper.print(x))

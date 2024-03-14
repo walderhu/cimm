@@ -1,4 +1,6 @@
 from typing import Any, Union
+
+
 class ArrayHelper:
     'A static class containing helper functions for array-related tasks.'
 
@@ -34,8 +36,35 @@ class ArrayHelper:
         arr1, arr2 = sorted(arrA), sorted(arrB)
         return all([arr1[i] == arr2[i] for i in range(len(arr1))])
 
+    
+    @staticmethod
+    def print(arr, sep=', ', beg='(', end=')'):
+        """
+        Returns a string representation of an array.
+        If the array contains objects with an id property,
+        the id property is printed for each of the elements.
+        
+        Parameters:
+        arr (list): The input array to be printed.
+        sep (str): The delimiter to separate elements in the output string. Default is ', '.
+        beg (str): The beginning of the returned string. Default is '('.
+        end (str): the Ending of the returned string. Default is ')'.
+
+        Returns:
+        str: A string representation of the input array.
+        """
+        string, elements = '', []
+        for i in range(len(arr)):
+            if hasattr(arr[i], '__iter__'):
+                elements.append(ArrayHelper.print(arr[i], sep=',', beg='', end=''))
+            else:
+                elements.append(str(arr[i].id) if hasattr(arr[i], "id") else str(arr[i]))
+        else:
+            string = beg + sep.join(elements) + end
+        return string
+
+
 
 if __name__ == '__main__':
     arr1 = [1, 2, 3]
-    arr2 = [1, 2, 3]
-    print(ArrayHelper.equals(arr1, arr2))
+    print(ArrayHelper.print(arr1))

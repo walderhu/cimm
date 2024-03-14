@@ -54,7 +54,6 @@ class TestAddFunction(unittest.TestCase):
         for i in range(len(obj)):
             for j in range(len(obj)):
                 self.assertTrue(testing(obj[i], obj[j]))
-                
 
     def test_equals_method_errors(self):
         def testing(arrA, arrB): return self.ctx.call(
@@ -70,7 +69,7 @@ class TestAddFunction(unittest.TestCase):
             1,
             1.0,
             True,
-            False, 
+            False,
             None,
             object()
         ]
@@ -78,6 +77,24 @@ class TestAddFunction(unittest.TestCase):
             with self.assertRaises(TypeError):
                 testing(error)
 
+
+    def test_print_method(self):
+        def testing(arr): return self.ctx.call("ArrayHelper.print", arr)\
+            == ArrayHelper.ArrayHelper.print(arr)
+        obj = [
+            # [1, 2, [1, 2, 3], 4, 5],
+            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+            # {'1': 'one', 'cimm': 'cool'},
+            (1, 2, 3),
+            (1,),
+            True,
+            # False,
+            # 1,
+            # 1.0,
+            # None,
+            # 'Cimm is cool laboratory'
+        ]
+        self.assertTrue(all(map(testing, obj)))
 
 if __name__ == '__main__':
     unittest.main()
