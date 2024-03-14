@@ -108,41 +108,6 @@ class ArrayHelper {
     }
 
     /**
-     * Checks whether or not an array contains a given value. the options object passed as a second argument can contain three properties. value: The value to be searched for. property: The property that is to be searched for a given value. func: A function that is used as a callback to return either true or false in order to do a custom comparison.
-     *
-     * @static
-     * @param {Array} arr An array.
-     * @param {Object} options See method description.
-     * @param {*} options.value The value for which to check.
-     * @param {String} [options.property=undefined] The property on which to check.
-     * @param {Function} [options.func=undefined] A custom property function.
-     * @returns {Boolean} A boolean whether or not the array contains a value.
-     */
-    static contains(arr, options) {
-        if (!options.property && !options.func) {
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i] == options.value) {
-                    return true;
-                }
-            }
-        } else if (options.func) {
-            for (let i = 0; i < arr.length; i++) {
-                if (options.func(arr[i])) {
-                    return true;
-                }
-            }
-        } else {
-            for (let i = 0; i < arr.length; i++) {
-                if (arr[i][options.property] == options.value) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Returns an array containing the intersection between two arrays. That is, values that are common to both arrays.
      *
      * @static

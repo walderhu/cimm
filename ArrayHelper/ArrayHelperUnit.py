@@ -77,15 +77,15 @@ class TestAddFunction(unittest.TestCase):
             with self.assertRaises(TypeError):
                 testing(error)
 
-
     def test_print_method(self):
         def testing(arr): return self.ctx.call("ArrayHelper.print", arr)\
             == ArrayHelper.ArrayHelper.print(arr)
         obj = [
-            [1, 2, [3, 4], [5, [6, 7], 8]], 
+            [1, 2, [3, 4], [5, [6, 7], 8]],
             [[1, 2], [3, 4]],
         ]
         self.assertTrue(all(map(testing, obj)))
+
 
 if __name__ == '__main__':
     unittest.main()

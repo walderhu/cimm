@@ -1,8 +1,8 @@
-2 static print(arr) 
-3  static each(arr, callback) 
-4  static get(arr, property, value) 
-5  static contains(arr, options) 
-6  static intersection(arrA, arrB) 
+// 2 static print(arr) // +
+// 3  static each(arr, callback) 
+// 4  static get(arr, property, value) 
+// 5  static contains(arr, options) 
+// 6  static intersection(arrA, arrB) 
 7  static unique(arr) 
 8 static count(arr, value) 
 9 static toggle(arr, value) 

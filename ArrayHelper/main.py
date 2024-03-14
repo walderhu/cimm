@@ -6,17 +6,11 @@ with open('ArrayHelper.js', 'r') as file:
 ctx = execjs.compile(js_code)
 
 obj = [
-    # [1, 2, 3],
     [1, 2, [1, 2, 3], 4, 5],
-    # {'1': 'one', 'cimm': 'cool'},
-    # True,
-    # False,
-    # 1,
-    # 1.0,
-    # None,
-    # 'Cimm is cool laboratory'
+    [1, 2, [3, 4], [5, [6, 7], 8]],
+    [[1, 2], [3, 4]],
 ]
-x = obj[0]
+x = obj[2]
 print(ctx.call("ArrayHelper.print", x))
 print(ArrayHelper.ArrayHelper.print(x))
 print(ctx.call("ArrayHelper.print", x) == ArrayHelper.ArrayHelper.print(x))
