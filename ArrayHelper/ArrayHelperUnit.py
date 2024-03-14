@@ -82,17 +82,8 @@ class TestAddFunction(unittest.TestCase):
         def testing(arr): return self.ctx.call("ArrayHelper.print", arr)\
             == ArrayHelper.ArrayHelper.print(arr)
         obj = [
-            # [1, 2, [1, 2, 3], 4, 5],
-            [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-            # {'1': 'one', 'cimm': 'cool'},
-            (1, 2, 3),
-            (1,),
-            True,
-            # False,
-            # 1,
-            # 1.0,
-            # None,
-            # 'Cimm is cool laboratory'
+            [1, 2, [3, 4], [5, [6, 7], 8]], 
+            [[1, 2], [3, 4]],
         ]
         self.assertTrue(all(map(testing, obj)))
 

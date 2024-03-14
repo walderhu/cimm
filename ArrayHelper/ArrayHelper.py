@@ -36,14 +36,13 @@ class ArrayHelper:
         arr1, arr2 = sorted(arrA), sorted(arrB)
         return all([arr1[i] == arr2[i] for i in range(len(arr1))])
 
-    
     @staticmethod
     def print(arr, sep=', ', beg='(', end=')'):
         """
         Returns a string representation of an array.
         If the array contains objects with an id property,
         the id property is printed for each of the elements.
-        
+
         Parameters:
         arr (list): The input array to be printed.
         sep (str): The delimiter to separate elements in the output string. Default is ', '.
@@ -56,13 +55,14 @@ class ArrayHelper:
         string, elements = '', []
         for i in range(len(arr)):
             if hasattr(arr[i], '__iter__'):
-                elements.append(ArrayHelper.print(arr[i], sep=',', beg='', end=''))
+                elements.append(ArrayHelper.print(
+                    arr[i], sep=',', beg='', end=''))
             else:
-                elements.append(str(arr[i].id) if hasattr(arr[i], "id") else str(arr[i]))
+                elements.append(str(arr[i].id) if hasattr(
+                    arr[i], "id") else str(arr[i]))
         else:
             string = beg + sep.join(elements) + end
         return string
-
 
 
 if __name__ == '__main__':
