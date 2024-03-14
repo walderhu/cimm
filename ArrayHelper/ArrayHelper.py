@@ -1,4 +1,4 @@
-from typing import Any, Union
+from typing import Any, Union, Callable
 
 
 class ArrayHelper:
@@ -12,7 +12,7 @@ class ArrayHelper:
         return value
 
     @staticmethod
-    def clone(arr: Union[list, dict, str]) -> Union[list, dict, str]:
+    def clone(arr: list) -> list:
         'Returns a clone of the object'
         if not hasattr(arr, '__iter__'):
             return {}
@@ -24,7 +24,7 @@ class ArrayHelper:
             return {str(i): symbol for i, symbol in enumerate(arr)}
 
     @staticmethod
-    def equals(arrA: Union[list, tuple], arrB: Union[list, tuple]) -> bool:
+    def equals(arrA: list, arrB: list) -> bool:
         """
         Returns a boolean value indicating whether two arrays contain the same elements.
         Supports only one-dimensional, non-nested arrays.
@@ -37,7 +37,7 @@ class ArrayHelper:
         return all([arr1[i] == arr2[i] for i in range(len(arr1))])
 
     @staticmethod
-    def print(arr, sep: str = ', ', beg: str = '(', end: str = ')') -> str:
+    def print(arr: list, sep: str = ', ', beg: str = '(', end: str = ')') -> str:
         """
         Returns a string representation of an array.
         If the array contains objects with an id property,
@@ -56,7 +56,7 @@ class ArrayHelper:
         return string
 
     @staticmethod
-    def each(arr, callback):
+    def each(arr: list, callback: Callable):
         """
         Вызывает соответсвтвующищую функцию callback
         для каждого элемента итерируемого объекта arr
@@ -64,77 +64,60 @@ class ArrayHelper:
         for item in arr:
             callback(item)
 
-    @staticmethod
-    def get(arr, property, value):
-        for obj in arr:
-            if obj.get(property) == value:
-                return obj
+    # @staticmethod
+    # def get(arr, property, value):
+    #     for obj in arr:
+    #         if obj.get(property) == value:
+    #             return obj
 
-    @staticmethod
-    def contains(arr, options):
-        if 'property' not in options and 'func' not in options:
-            for item in arr:
-                if item == options['value']:
-                    return True
-        elif 'func' in options:
-            for item in arr:
-                if options['func'](item):
-                    return True
-        else:
-            for item in arr:
-                if item.get(options['property']) == options['value']:
-                    return True
-        return False
-
+    # @staticmethod
+    # def contains(arr, options):
+    #     if 'property' not in options and 'func' not in options:
+    #         for item in arr:
+    #             if item == options['value']:
+    #                 return True
+    #     elif 'func' in options:
+    #         for item in arr:
+    #             if options['func'](item):
+    #                 return True
+    #     else:
+    #         for item in arr:
+    #             if item.get(options['property']) == options['value']:
+    #                 return True
+    #     return False
+    
     @staticmethod
     def intersection(arrA, arrB):
-        intersection = []
-        for itemA in arrA:
-            for itemB in arrB:
-                if itemA == itemB:
-                    intersection.append(itemA)
-        return intersection
+        return [elem for elem in arrA if elem in arrB]
 
     @staticmethod
     def unique(arr):
-        contains = {}
-        return list(filter(lambda i: contains[i] if i in contains else contains.setdefault(i, True), arr))
+        return list(set(arr))
 
     @staticmethod
     def count(arr, value):
-        count = 0
-        for i in arr:
-            if i == value:
-                count += 1
-        return count
+        return arr.count(value)
 
     @staticmethod
     def toggle(arr, value):
-        new_arr = []
-        removed = False
-        for i in arr:
-            if i != value:
-                new_arr.append(i)
-            else:
-                removed = True
-        if not removed:
-            new_arr.append(value)
+        if value in arr:
+            new_arr = ArrayHelper.remove_unique(arr, value)
+        else:
+            arr.append(value)
+            new_arr = ArrayHelper.clone(arr)
         return new_arr
 
     @staticmethod
     def remove(arr, value):
-        tmp = []
-        for i in arr:
-            if i != value:
-                tmp.append(i)
-        return tmp
-
+        return [elem for elem in arr if elem != value]
+    
     @staticmethod
     def remove_unique(arr, value):
-        index = arr.index(value)
-        if index > -1:
-            arr.pop(index)
-        return arr
+        clone = ArrayHelper.clone(arr)
+        if value in clone:
+            del clone[clone.index(value)]
+        return clone
+    
 
     @staticmethod
     def remove_all(arrA, arrB):
@@ -143,34 +126,22 @@ class ArrayHelper:
     @staticmethod
     def merge(arrA, arrB):
         arr = [None] * (len(arrA) + len(arrB))
-        for i in range(len(arrA)):
-            arr[i] = arrA[i]
-        for i in range(len(arrB)):
-            arr[len(arrA) + i] = arrB[i]
+        for i, value in enumerate(arrA):
+            arr[i] = value
+        for i, value in enumerate(arrB):
+            arr[len(arrA) + i] = value
         return arr
 
     @staticmethod
     def contains_all(arrA, arrB):
-        containing = 0
-        for i in arrA:
-            for j in arrB:
-                if i == j:
-                    containing += 1
-        return containing == len(arrB)
+        return all([i == j for i in arrA for j in arrB]) and len(arrB) == len(arrA)
 
-    @staticmethod
-    def sort_by_atomic_number_desc(arr):
-        map = list(map(lambda e, i: {"index": i, "value": list(
-            map(int, e["atomicNumber"].split(".")))}, arr, range(len(arr))))
-        map.sort(key=lambda x: (len(x["value"]), x["value"]), reverse=True)
-        return list(map(lambda e: arr[e["index"]], map))
+    # @staticmethod
+    # def sort_by_atomic_number_desc(arr):
+    #     map = list(map(lambda e, i: {"index": i, "value": list(map(int, e["atomicNumber"].split(".")))}, arr, range(len(arr))))
+    #     map.sort(key=lambda x: (len(x["value"]), x["value"]), reverse=True)
+    #     return list(map(lambda e: arr[e["index"]], map))
 
     @staticmethod
     def deep_copy(arr):
-        new_arr = []
-        for i in arr:
-            if isinstance(i, list):
-                new_arr.append(ArrayHelper.deep_copy(i))
-            else:
-                new_arr.append(i)
-        return new_arr
+        return [ArrayHelper.deep_copy(elem) if hasattr(arr, '__iter__') else elem for elem in arr]
