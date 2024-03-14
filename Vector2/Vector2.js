@@ -1,5 +1,4 @@
 class Vector2 {
-
     constructor(x, y) {
         if (arguments.length == 0) {
             this.x = 0;
