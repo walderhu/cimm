@@ -73,7 +73,6 @@ class ArrayHelper {
                 }
             }
         }
-
         return false;
     }
 

@@ -1,5 +1,6 @@
 from ArrayHelper import contains
 
+
 class Atom:
     atomicNumbers = {
         'H': 1,
@@ -367,5 +368,3 @@ class Atom:
 
     def getMaxBonds(self):
         return Atom.maxBonds[self.element]
-
-

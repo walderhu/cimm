@@ -1,7 +1,8 @@
 'Testing the ArrayHelper module'
 import unittest
 import execjs
-import ArrayHelper
+from ..src import ArrayHelper
+
 
 
 class TestAddFunction(unittest.TestCase):

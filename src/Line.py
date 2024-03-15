@@ -1,4 +1,5 @@
-from  math import atan2, sqrt, sin, cos
+from math import atan2, sqrt, sin, cos
+
 
 class Vector2:
     def __init__(self, x=0, y=0):
@@ -36,6 +37,7 @@ class Vector2:
         self.x -= other.x
         self.y -= other.y
 
+
 class Line:
     def __init__(self, from_=Vector2(0, 0), to=Vector2(0, 0), elementFrom=None, elementTo=None, chiralFrom=False, chiralTo=False):
         self.from_ = from_
@@ -52,7 +54,8 @@ class Line:
         return sqrt((self.to.x - self.from_.x) ** 2 + (self.to.y - self.from_.y) ** 2)
 
     def get_angle(self):
-        diff = Vector2.subtract(self.get_right_vector(), self.get_left_vector())
+        diff = Vector2.subtract(self.get_right_vector(),
+                                self.get_left_vector())
         return diff.angle()
 
     def get_right_vector(self):
@@ -141,5 +144,3 @@ class Line:
         self.to.add(f)
         self.from_.subtract(f)
         return self
-
-

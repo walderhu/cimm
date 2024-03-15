@@ -31,5 +31,3 @@ formula_to_common_name = {
     'C6H15N': 'triethyl amine',
     'H2O': 'water'
 }
-
-

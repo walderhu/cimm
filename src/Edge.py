@@ -21,4 +21,3 @@ class Edge:
     def setBondType(self, bondType):
         self.bondType = bondType
         self.weight = Edge.bonds[bondType]
-

@@ -13,4 +13,3 @@ class ThemeManager:
     def set_theme(self, theme):
         if theme in self.colors:
             self.theme = self.colors[theme]
-

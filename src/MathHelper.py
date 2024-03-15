@@ -1,5 +1,6 @@
 from math import pi, sin, cos, atan2
 
+
 class MathHelper:
     @staticmethod
     def round(value, decimals=1):
@@ -74,5 +75,3 @@ class MathHelper:
     @staticmethod
     def twoPI():
         return 2.0 * pi
-
-
