@@ -30,28 +30,13 @@ class Vector2:
         new_y = self.y + vect.y
         return Vector2(new_x, new_y)
 
-    @staticmethod
-    def add(vec1: 'Vector2', vec2: 'Vector2') -> 'Vector2':
-        'Add the x and y coordinate values of a vector to the x and y coordinate values of this vector.'
-        return vec1 + vec2
-
     def __sub__(self, vec: 'Vector2') -> 'Vector2':
         new_x = self.x - vec.x
         new_y = self.y - vec.y
         return Vector2(new_x, new_y)
 
-    @staticmethod
-    def subtract(vec1: 'Vector2', vec2: 'Vector2') -> 'Vector2':
-        'Subtract the x and y coordinate values of a vector from the x and y coordinate values of this vector.'
-        return vec1 - vec2
-
     def __truediv__(self, vec: 'Vector2') -> 'Vector2':
         return Vector2(self, 1 / vec)
-
-    @staticmethod
-    def divide(vec1: 'Vector2', vec2: 'Vector2') -> 'Vector2':
-        'Divide the x and y coordinate values of this vector by a scalar.'
-        return vec1 / vec2
 
     def __mul__(self, val: 'Vector2') -> 'Vector2':
         if isinstance(val, Vector2):
@@ -65,25 +50,10 @@ class Vector2:
     def __rmul__(self, scalar: 'Vector2') -> 'Vector2':
         return Vector2(self, scalar)
 
-    @staticmethod
-    def multiply(vec1: 'Vector2', vec2: 'Vector2') -> 'Vector2':
-        'Multiply the x and y coordinate values of this vector by the values of another vector.'
-        return vec1 * vec2
-
-    @staticmethod
-    def multiplyScalar(vec1: 'Vector2', scalar: 'Vector2') -> 'Vector2':
-        'Multiply the x and y coordinate values of this vector by a scalar.'
-        return vec1 * scalar
-
     def __neg__(self) -> 'Vector2':
         new_x = -self.x
         new_y = -self.y
         return Vector2(new_x, new_y)
-
-    @staticmethod
-    def invert(self) -> 'Vector2':
-        'Inverts this vector. Same as multiply(-1.0).'
-        return Vector2.__neg__(self)
 
     def angle(self) -> float:
         'Returns the angle of this vector in relation to the coordinate system.'
@@ -161,9 +131,7 @@ class Vector2:
         return angle if distSqB > distSqA else -angle
 
     def getRotateToAngle(self, vec: 'Vector2', center: 'Vector2') -> float:
-        a = Vector2.subtract(self, center)
-        b = Vector2.subtract(vec, center)
-        angle = Vector2.angle(b, a)
+        angle = Vector2.angle(vec - center, self - center)
         return 0.0 if isnan(angle) else angle
 
     def isInPolygon(self, polygon: List['Vector2']) -> bool:
@@ -179,10 +147,6 @@ class Vector2:
 
     def __len__(self):
         return sqrt((self.x ** 2) + (self.y ** 2))
-
-    def length(self) -> float:
-        'Returns the length of this vector.'
-        return len(self)
 
     def lengthSq(self) -> float:
         'Returns the square of the length of this vector.'
@@ -215,7 +179,7 @@ class Vector2:
     @staticmethod
     def normals(vecA: 'Vector2', vecB: 'Vector2') -> list['Vector2']:
         'Returns the normals of a line spanned by two vectors.'
-        delta = Vector2.subtract(vecB, vecA)
+        delta = vecB - vecA
         return [
             Vector2(-delta.y, delta.x),
             Vector2(delta.y, -delta.x)
@@ -224,16 +188,11 @@ class Vector2:
     @staticmethod
     def units(vecA: 'Vector2', vecB: 'Vector2') -> list['Vector2']:
         'Returns the unit (normalized normal) vectors of a line spanned by two vectors.'
-        delta = Vector2.subtract(vecB, vecA)
+        delta = vecB - vecA
         return [
             (Vector2(-delta.y, delta.x)).normalize(),
             (Vector2(delta.y, -delta.x)).normalize()
         ]
-
-    @staticmethod
-    def divideScalar(vec: 'Vector2', scalar) -> 'Vector2':
-        'Divides a vector by a scalar and returns the result as new vector.'
-        return vec / scalar
 
     @staticmethod
     def dot(vecA: 'Vector2', vecB: 'Vector2') -> 'Vector2':
@@ -244,13 +203,13 @@ class Vector2:
     def angle(vecA: 'Vector2', vecB: 'Vector2') -> float:
         'Returns the angle between two vectors.'
         dot = Vector2.dot(vecA, vecB)
-        return acos(dot / (vecA.length() * vecB.length()))
+        return acos(dot / (len(vecA) * len(vecB)))
 
     @staticmethod
     def threePointangle(vecA: 'Vector2', vecB: 'Vector2', vecC: 'Vector2') -> float:
         'Returns the angle between two vectors based on a third vector in between.'
-        ab = Vector2.subtract(vecB, vecA)
-        bc = Vector2.subtract(vecC, vecB)
+        ab = vecB - vecA
+        bc = vecC - vecB
         abLength = vecA.distance(vecB)
         bcLength = vecB.distance(vecC)
         return acos(Vector2.dot(ab, bc) / (abLength * bcLength))
