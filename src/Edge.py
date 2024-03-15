@@ -33,4 +33,3 @@ class Edge:
         'Set the bond type of this edge. This also sets the edge weight.'
         self.bondType = bondType
         self.weight = Edge.bonds[bondType]
-

@@ -11,7 +11,8 @@ class Options:
         for obj in args_list:
             for prop, value in obj.items():
                 if deep and isinstance(value, dict):
-                    extended[prop] = Options.extend(True, extended.get(prop, {}), value)
+                    extended[prop] = Options.extend(
+                        True, extended.get(prop, {}), value)
                 else:
                     extended[prop] = value
         return extended

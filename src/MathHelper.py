@@ -58,6 +58,7 @@ class MathHelper:
         'Returns the parity of the permutation (1 or -1)'
         visited = [0] * len(arr)
         evenLengthCycleCount = 0
+
         def traverseCycle(i, cycleLength=0):
             if visited[i] == 1:
                 return cycleLength
@@ -70,7 +71,7 @@ class MathHelper:
             cycleLength = traverseCycle(i)
             evenLengthCycleCount += (1 - cycleLength % 2)
         return -1 if evenLengthCycleCount % 2 else 1
-    
+
     @staticmethod
     def radFactor() -> float:
         'The factor to convert degrees to radians.'
