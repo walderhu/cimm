@@ -1,16 +1,17 @@
 from math import sqrt, sin, cos
 from Vector2 import Vector2
 
+
 class Line:
     def __init__(self, from_=Vector2(0, 0), to=Vector2(0, 0), elementFrom=None, elementTo=None, chiralFrom=False, chiralTo=False):
-        f""" A class representing a line.
-       {self.from_: Vector2} [from=new Vector2(0, 0)] A vector marking the beginning of the line.
-       {self.to: Vector2} [to=new Vector2(0, 0)] A vector marking the end of the line.
-       {self.elementFrom: str} [elementFrom=null] A one-letter representation of the element associated with the vector marking the beginning of the line.
-       {self.elementTo: str} [elementTo=null] A one-letter representation of the element associated with the vector marking the end of the line.
-       {self.chiralFrom: bool} [chiralFrom=false] Whether or not the from atom is a chiral center.
-       {self.chiralTo: bool} [chiralTo=false] Whether or not the to atom is a chiral center. """
-        
+        """ A class representing a line.
+{from_: Vector2} [from=new Vector2(0, 0)] A vector marking the beginning of the line.
+{to: Vector2} [to=new Vector2(0, 0)] A vector marking the end of the line.
+{elementFrom: str} [elementFrom=null] A one-letter representation of the element associated with the vector marking the beginning of the line.
+{elementTo: str} [elementTo=null] A one-letter representation of the element associated with the vector marking the end of the line.
+{chiralFrom: bool} [chiralFrom=false] Whether or not the from atom is a chiral center.
+{chiralTo: bool} [chiralTo=false] Whether or not the to atom is a chiral center. """
+
         self.from_ = from_
         self.to = to
         self.elementFrom = elementFrom
@@ -28,7 +29,8 @@ class Line:
 
     def get_angle(self) -> float:
         'Returns the angle of the line in relation to the coordinate system (the x-axis).'
-        diff = Vector2.subtract(self.get_right_vector(), self.get_left_vector())
+        diff = Vector2.subtract(self.get_right_vector(),
+                                self.get_left_vector())
         return diff.angle()
 
     def get_right_vector(self) -> 'Vector2':
@@ -75,7 +77,7 @@ class Line:
             self.to.y = y
         return self
 
-    def rotate_to_x_axis(self)-> 'Line':
+    def rotate_to_x_axis(self) -> 'Line':
         'Rotates this line to be aligned with the x-axis. The center of rotation is the left vector.'
         left = self.get_left_vector()
         self.set_right_vector(left.x + self.get_length(), left.y)

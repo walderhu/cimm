@@ -4,7 +4,6 @@ from ArrayHelper import ArrayHelper
 # from Ring import Ring
 
 
-
 class Atom:
     'A class representing an atom.'
 
@@ -279,39 +278,39 @@ class Atom:
         'Uuo': 118
     }
 
-    def __init__(self, element: str, bondType: str='-'):
-        f""" The constructor of the class Atom.
-        {self.element: str} element The element symbol of this atom. Single-letter symbols are always uppercase. Examples: H, C, F, Br, Si, ...
-        {self.drawExplicit: bool} drawExplicit A boolean indicating whether or not this atom is drawn explicitly (for example, a carbon atom). This overrides the default behaviour.
-        {self.ringbonds: list} ringbonds An array containing the ringbond ids and bond types as specified in the original SMILE.
-        {self.branchBond: str} branchBond The branch bond as defined in the SMILES.
-        {self.ringbonds: List[int]} ringbonds[].id The ringbond id as defined in the SMILES.
-        {self.ringbonds: List[str]} ringbonds[].bondType The bond type of the ringbond as defined in the SMILES.
-        {self.rings: List[int]} rings The ids of rings which contain this atom.
-        {self.bondType} bondType The bond type associated with this array. Examples: -, =, #, ...
-        {self.isBridge: bool} isBridge A boolean indicating whether or not this atom is part of a bridge in a bridged ring (contained by the largest ring).
-        {self.isBridgeNode: bool} isBridgeNode A boolean indicating whether or not this atom is a bridge node (a member of the largest ring in a bridged ring which is connected to a bridge-atom).
-        {self.originalRings: List[int]} originalRings Used to back up rings when they are replaced by a bridged ring.
-        {self.bridgedRing: int} bridgedRing The id of the bridged ring if the atom is part of a bridged ring.
-        {self.anchoredRings: List[int]} anchoredRings The ids of the rings that are anchored to this atom. The centers of anchored rings are translated when this atom is translated.
-        {self.bracket: Any} bracket If this atom is defined as a bracket atom in the original SMILES, this object contains all the bracket information. Example: (hcount: (Number), charge: ['--', '-', '+', '++'], isotope: (Number) ).
-        {self.plane: int} plane Specifies on which "plane" the atoms is in stereochemical deptictions (-1 back, 0 middle, 1 front).
-        {self.attachedPseudoElements: list} attachedPseudoElements A map with containing information for pseudo elements or concatinated elements. The key is comprised of the element symbol and the hydrogen count.
-        {self.attachedPseudoElements: List[str]} attachedPseudoElement[].element The element symbol.
-        {self.attachedPseudoElements: List[int]} attachedPseudoElement[].count The number of occurences that match the key.
-        {self.attachedPseudoElements: List[int]} attachedPseudoElement[].hyrogenCount The number of hydrogens attached to each atom matching the key.
-        {self.hasAttachedPseudoElements: bool} hasAttachedPseudoElements A boolean indicating whether or not this attom will be drawn with an attached pseudo element or concatinated elements.
-        {self.isDrawn: bool} isDrawn A boolean indicating whether or not this atom is drawn. In contrast to drawExplicit, the bond is drawn neither.
-        {self.isConnectedToRing: bool} isConnectedToRing A boolean indicating whether or not this atom is directly connected (but not a member of) a ring.
-        {self.neighbouringElements: List[str]} neighbouringElements An array containing the element symbols of neighbouring atoms.
-        {self.isPartOfAromaticRing: bool} isPartOfAromaticRing A boolean indicating whether or not this atom is part of an explicitly defined aromatic ring. Example: c1ccccc1.
-        {self.bondCount: int} bondCount The number of bonds in which this atom is participating.
-        {self.chirality: str} chirality The chirality of this atom if it is a stereocenter (R or S).
-        {self.priority: int} priority The priority of this atom acording to the CIP rules, where 0 is the highest priority.
-        {self.mainChain: bool} mainChain A boolean indicating whether or not this atom is part of the main chain (used for chirality).
-        {self.hydrogenDirection: str} hydrogenDirection The direction of the hydrogen, either up or down. Only for stereocenters with and explicit hydrogen.
-        {self.subtreeDepth: int} subtreeDepth The depth of the subtree coming from a stereocenter. """
-        
+    def __init__(self, element: str, bondType: str = '-'):
+        """ The constructor of the class Atom.
+{element: str} element The element symbol of this atom. Single-letter symbols are always uppercase. Examples: H, C, F, Br, Si, ...
+{drawExplicit: bool} drawExplicit A boolean indicating whether or not this atom is drawn explicitly (for example, a carbon atom). This overrides the default behaviour.
+{ringbonds: list} ringbonds An array containing the ringbond ids and bond types as specified in the original SMILE.
+{branchBond: str} branchBond The branch bond as defined in the SMILES.
+{ringbonds: List[int]} ringbonds[].id The ringbond id as defined in the SMILES.
+{ringbonds: List[str]} ringbonds[].bondType The bond type of the ringbond as defined in the SMILES.
+{rings: List[int]} rings The ids of rings which contain this atom.
+{bondType} bondType The bond type associated with this array. Examples: -, =, #, ...
+{isBridge: bool} isBridge A boolean indicating whether or not this atom is part of a bridge in a bridged ring (contained by the largest ring).
+{isBridgeNode: bool} isBridgeNode A boolean indicating whether or not this atom is a bridge node (a member of the largest ring in a bridged ring which is connected to a bridge-atom).
+{originalRings: List[int]} originalRings Used to back up rings when they are replaced by a bridged ring.
+{bridgedRing: int} bridgedRing The id of the bridged ring if the atom is part of a bridged ring.
+{anchoredRings: List[int]} anchoredRings The ids of the rings that are anchored to this atom. The centers of anchored rings are translated when this atom is translated.
+{bracket: Any} bracket If this atom is defined as a bracket atom in the original SMILES, this object contains all the bracket information. Example: (hcount: (Number), charge: ['--', '-', '+', '++'], isotope: (Number) ).
+{plane: int} plane Specifies on which "plane" the atoms is in stereochemical deptictions (-1 back, 0 middle, 1 front).
+{attachedPseudoElements: list} attachedPseudoElements A map with containing information for pseudo elements or concatinated elements. The key is comprised of the element symbol and the hydrogen count.
+{attachedPseudoElements: List[str]} attachedPseudoElement[].element The element symbol.
+{attachedPseudoElements: List[int]} attachedPseudoElement[].count The number of occurences that match the key.
+{attachedPseudoElements: List[int]} attachedPseudoElement[].hyrogenCount The number of hydrogens attached to each atom matching the key.
+{hasAttachedPseudoElements: bool} hasAttachedPseudoElements A boolean indicating whether or not this attom will be drawn with an attached pseudo element or concatinated elements.
+{isDrawn: bool} isDrawn A boolean indicating whether or not this atom is drawn. In contrast to drawExplicit, the bond is drawn neither.
+{isConnectedToRing: bool} isConnectedToRing A boolean indicating whether or not this atom is directly connected (but not a member of) a ring.
+{neighbouringElements: List[str]} neighbouringElements An array containing the element symbols of neighbouring atoms.
+{isPartOfAromaticRing: bool} isPartOfAromaticRing A boolean indicating whether or not this atom is part of an explicitly defined aromatic ring. Example: c1ccccc1.
+{bondCount: int} bondCount The number of bonds in which this atom is participating.
+{chirality: str} chirality The chirality of this atom if it is a stereocenter (R or S).
+{priority: int} priority The priority of this atom acording to the CIP rules, where 0 is the highest priority.
+{mainChain: bool} mainChain A boolean indicating whether or not this atom is part of the main chain (used for chirality).
+{hydrogenDirection: str} hydrogenDirection The direction of the hydrogen, either up or down. Only for stereocenters with and explicit hydrogen.
+{subtreeDepth: int} subtreeDepth The depth of the subtree coming from a stereocenter. """
+
         self.idx = None
         self.element = element.upper() if len(element) == 1 else element
         self.drawExplicit = False

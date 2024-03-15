@@ -1,11 +1,3 @@
 def get_charge_text(charge):
-    if charge == 1:
-        return '+'
-    elif charge == 2:
-        return '2+'
-    elif charge == -1:
-        return '-'
-    elif charge == -2:
-        return '2-'
-    else:
-        return ''
+    charge_map = {1: '+', 2: '2+', -1: '-', -2: '2-'}
+    return charge_map.get(charge, '')
