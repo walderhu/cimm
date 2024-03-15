@@ -1,7 +1,10 @@
-TEST = src/_Unit*
-ALL_FILES = src/*.py
+TEST = _UnitArrayHelper.py
+ALL_FILES = *.py
 
 test:
+	@python3 _UnitAtom.py
+
+testing:
 	@python3 $(TEST)
 
 clean:
