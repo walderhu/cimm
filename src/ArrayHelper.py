@@ -1,16 +1,18 @@
 from typing import Any, Union, Callable
 
-
 class ArrayHelper:
+    'A static class containing helper functions for array-related tasks.'
 
     @staticmethod
     def __get_clone_value(value: Any) -> Any:
+        'Checks if a particular object has a clone method'
         if hasattr(value, 'clone') and callable(getattr(value, 'clone')):
             return value.clone()
         return value
 
     @staticmethod
     def clone(arr: list) -> list:
+        'Returns a copy of the object'
         if not hasattr(arr, '__iter__'):
             return {}
         elif isinstance(arr, dict):
@@ -22,12 +24,10 @@ class ArrayHelper:
 
     @staticmethod
     def equals(arrA: list, arrB: list) -> bool:
-        if any([not hasattr(x, '__iter__') or isinstance(x, str) for x in (arrA, arrB)]):
+        'Checks 2 objects for equality'
+        if any(not hasattr(x, '__iter__') or isinstance(x, str) for x in (arrA, arrB)):
             raise TypeError
-        if len(arrA) != len(arrB):
-            return False
-        arr1, arr2 = sorted(arrA), sorted(arrB)
-        return all([arr1[i] == arr2[i] for i in range(len(arr1))])
+        return len(arrA) == len(arrB) and all(a == b for a, b in zip(sorted(arrA), sorted(arrB)))
 
     @staticmethod
     def print(arr: list, sep: str = ', ', beg: str = '(', end: str = ')') -> str:
