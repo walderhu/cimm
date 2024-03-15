@@ -19,7 +19,7 @@ html: gcov
 	@open htmlcov/index.html
 
 clang:
-	@autopep8 --in-place $(ALL_FILES)
+	@autopep8 --in-place src/*
 
 push: clean
 	@git add * && git commit && git push origin $(shell git rev-parse --abbrev-ref HEAD)

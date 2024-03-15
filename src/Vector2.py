@@ -39,7 +39,7 @@ class Vector2:
         new_x = self.x - vec.x
         new_y = self.y - vec.y
         return Vector2(new_x, new_y)
-    
+
     @staticmethod
     def subtract(vec1: 'Vector2', vec2: 'Vector2') -> 'Vector2':
         'Subtract the x and y coordinate values of a vector from the x and y coordinate values of this vector.'
@@ -47,12 +47,12 @@ class Vector2:
 
     def __truediv__(self, vec: 'Vector2') -> 'Vector2':
         return Vector2(self, 1 / vec)
-    
+
     @staticmethod
     def divide(vec1: 'Vector2', vec2: 'Vector2') -> 'Vector2':
         'Divide the x and y coordinate values of this vector by a scalar.'
         return vec1 / vec2
-    
+
     def __mul__(self, val: 'Vector2') -> 'Vector2':
         if isinstance(val, Vector2):
             new_x = self.x * val.x
@@ -61,32 +61,29 @@ class Vector2:
             new_x = self.x * val
             new_y = self.y * val
         return Vector2(new_x, new_y)
-    
+
     def __rmul__(self, scalar: 'Vector2') -> 'Vector2':
         return Vector2(self, scalar)
-    
+
     @staticmethod
     def multiply(vec1: 'Vector2', vec2: 'Vector2') -> 'Vector2':
         'Multiply the x and y coordinate values of this vector by the values of another vector.'
         return vec1 * vec2
-    
+
     @staticmethod
     def multiplyScalar(vec1: 'Vector2', scalar: 'Vector2') -> 'Vector2':
         'Multiply the x and y coordinate values of this vector by a scalar.'
         return vec1 * scalar
-    
+
     def __neg__(self) -> 'Vector2':
         new_x = -self.x
         new_y = -self.y
         return Vector2(new_x, new_y)
-    
+
     @staticmethod
     def invert(self) -> 'Vector2':
         'Inverts this vector. Same as multiply(-1.0).'
         return Vector2.__neg__(self)
-    
-
-
 
     def angle(self) -> float:
         'Returns the angle of this vector in relation to the coordinate system.'
@@ -107,7 +104,8 @@ class Vector2:
 
     def relativeClockwise(self, center: 'Vector2', vec: 'Vector2') -> int:
         'Checks whether or not this vector is in a clockwise or counter-clockwise rotational direction compared to another vector in relation to an arbitrary third vector.'
-        determinant = (self.y - center.y) * (vec.x - center.x) - (self.x - center.x) * (vec.y - center.y)
+        determinant = (self.y - center.y) * (vec.x - center.x) - \
+            (self.x - center.x) * (vec.y - center.y)
         return 1 if determinant > 0 else (-1 if determinant < 0 else 0)
 
     def rotate(self, angle: float) -> 'Vector2':
@@ -127,7 +125,6 @@ class Vector2:
         self += vec
         return self
 
-
     def rotateTo(self, vec: 'Vector2', center: 'Vector2', offsetAngle=0.0) -> 'Vector2':
         'Rotate a vector around a given center to the same angle as another vector (so that the two vectors and the center are in a line, with both vectors on one side of the center), keeps the distance from this vector to the center.'
         self.x += 0.001
@@ -144,9 +141,6 @@ class Vector2:
         distSqB = self.distanceSq(vec)
         if distSqB < distSqA:
             self.rotateAround(2.0 * angle, center)
-
-
-
 
     def getRotateAwayFromAngle(self, vec: 'Vector2', center: 'Vector2', angle: float) -> float:
         'Returns the angle in radians used to rotate this vector towards a given vector.'
@@ -192,7 +186,7 @@ class Vector2:
 
     def lengthSq(self) -> float:
         'Returns the square of the length of this vector.'
-        return (self.x **2) + (self.y ** 2)
+        return (self.x ** 2) + (self.y ** 2)
 
     def normalize(self) -> 'Vector2':
         'Normalizes this vector.'
@@ -202,14 +196,6 @@ class Vector2:
     def normalized(self) -> 'Vector2':
         'Returns a normalized copy of this vector.'
         return self / len(self)
-    
-
-
-
-
-
-
-
 
     def whichSide(self, vecA: 'Vector2', vecB: 'Vector2') -> float:
         'Calculates which side of a line spanned by two vectors this vector is.'
@@ -282,4 +268,3 @@ class Vector2:
         for vec in vecs:
             avg += vec
         return avg.normalize()
-
