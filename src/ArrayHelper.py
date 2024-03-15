@@ -85,7 +85,7 @@ class ArrayHelper:
     def toggle(arr: list, value: Any) -> list:
         'Toggles the value of an array. If a value is not contained in an array, the array returned will contain all the values of the original array including the value. If a value is contained in an array, the array returned will contain all the values of the original array excluding the value.'
         if value in arr:
-            new_arr = ArrayHelper.remove_unique(arr, value)
+            new_arr = ArrayHelper.remove(arr, value)
         else:
             arr.append(value)
             new_arr = ArrayHelper.clone(arr)
@@ -122,7 +122,7 @@ class ArrayHelper:
     @staticmethod
     def contains_all(arrA: list, arrB: list) -> bool:
         'Checks whether or not an array contains all the elements of another array, without regard to the order.'
-        return all([i == j for i in arrA for j in arrB]) and len(arrB) == len(arrA)
+        return set(arrA) >= set(arrB)
 
     @staticmethod
     def sort_by_atomic_number_desc(arr: list) -> list:
@@ -137,4 +137,4 @@ class ArrayHelper:
     @staticmethod
     def deep_copy(arr: list) -> list:
         'Copies a an n-dimensional array.'
-        return [ArrayHelper.deep_copy(elem) if hasattr(arr, '__iter__') else elem for elem in arr]
+        return [ArrayHelper.deep_copy(elem) if hasattr(elem, '__iter__') else elem for elem in arr]
