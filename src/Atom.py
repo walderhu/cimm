@@ -280,8 +280,7 @@ class Atom:
     }
 
     def __init__(self, element: str, bondType: str='-'):
-        'The constructor of the class Atom.'
-        f"""
+        f""" The constructor of the class Atom.
         {self.element: str} element The element symbol of this atom. Single-letter symbols are always uppercase. Examples: H, C, F, Br, Si, ...
         {self.drawExplicit: bool} drawExplicit A boolean indicating whether or not this atom is drawn explicitly (for example, a carbon atom). This overrides the default behaviour.
         {self.ringbonds: list} ringbonds An array containing the ringbond ids and bond types as specified in the original SMILE.
@@ -311,8 +310,8 @@ class Atom:
         {self.priority: int} priority The priority of this atom acording to the CIP rules, where 0 is the highest priority.
         {self.mainChain: bool} mainChain A boolean indicating whether or not this atom is part of the main chain (used for chirality).
         {self.hydrogenDirection: str} hydrogenDirection The direction of the hydrogen, either up or down. Only for stereocenters with and explicit hydrogen.
-        {self.subtreeDepth: int} subtreeDepth The depth of the subtree coming from a stereocenter.
-        """
+        {self.subtreeDepth: int} subtreeDepth The depth of the subtree coming from a stereocenter. """
+        
         self.idx = None
         self.element = element.upper() if len(element) == 1 else element
         self.drawExplicit = False
