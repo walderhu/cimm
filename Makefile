@@ -1,14 +1,14 @@
-TEST_FILES = tests/*.py
-ALL_FILES = src/*.py $(TEST_FILES)
+TEST = src/_Unit*
+ALL_FILES = src/*.py
 
 test:
-	@python3 $(TEST_FILES)
+	@python3 $(TEST)
 
 clean:
 	@rm -rf __pycache__ .pytest_cache htmlcov .coverage
 
 gcov:
-	@python3 -m coverage run -m pytest $(TEST_FILES)
+	@python3 -m coverage run -m pytest $(TEST)
 	@python3 -m coverage report
 
 html: gcov

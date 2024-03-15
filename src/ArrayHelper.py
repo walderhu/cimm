@@ -40,10 +40,9 @@ class ArrayHelper:
             if isinstance(item, str):
                 elements.append(item)
             elif hasattr(item, '__iter__'):
-                elements.append(print(item, sep=',', beg='', end=''))
+                elements.append(ArrayHelper.print(item, sep=',', beg='', end=''))
             else:
-                elements.append(str(item.id) if hasattr(
-                    item, "id") else str(item))
+                elements.append(str(item.id) if hasattr(item, "id") else str(item))
         return f'{beg}{sep.join(elements)}{end}'
 
     @staticmethod
@@ -132,6 +131,7 @@ class ArrayHelper:
         'Checks whether or not an array contains all the elements of another array, without regard to the order.'
         return all([i == j for i in arrA for j in arrB]) and len(arrB) == len(arrA)
 
+    @staticmethod
     def sort_by_atomic_number_desc(arr: list) -> list:
         'Sort an array of atomic number information. Where the number is indicated as x, x.y, x.y.z, ...'
         map_list = list()

@@ -1,6 +1,5 @@
 from ArrayHelper import contains
 
-
 class Atom:
     atomicNumbers = {
         'H': 1,
