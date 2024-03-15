@@ -298,9 +298,9 @@ class Atom:
         {self.bracket: Any} bracket If this atom is defined as a bracket atom in the original SMILES, this object contains all the bracket information. Example: (hcount: (Number), charge: ['--', '-', '+', '++'], isotope: (Number) ).
         {self.plane: int} plane Specifies on which "plane" the atoms is in stereochemical deptictions (-1 back, 0 middle, 1 front).
         {self.attachedPseudoElements: list} attachedPseudoElements A map with containing information for pseudo elements or concatinated elements. The key is comprised of the element symbol and the hydrogen count.
-        {self.attachedPseudoElement: List[str]} attachedPseudoElement[].element The element symbol.
-        {self.attachedPseudoElement: List[int]} attachedPseudoElement[].count The number of occurences that match the key.
-        {self.attachedPseudoElement: List[int]} attachedPseudoElement[].hyrogenCount The number of hydrogens attached to each atom matching the key.
+        {self.attachedPseudoElements: List[str]} attachedPseudoElement[].element The element symbol.
+        {self.attachedPseudoElements: List[int]} attachedPseudoElement[].count The number of occurences that match the key.
+        {self.attachedPseudoElements: List[int]} attachedPseudoElement[].hyrogenCount The number of hydrogens attached to each atom matching the key.
         {self.hasAttachedPseudoElements: bool} hasAttachedPseudoElements A boolean indicating whether or not this attom will be drawn with an attached pseudo element or concatinated elements.
         {self.isDrawn: bool} isDrawn A boolean indicating whether or not this atom is drawn. In contrast to drawExplicit, the bond is drawn neither.
         {self.isConnectedToRing: bool} isConnectedToRing A boolean indicating whether or not this atom is directly connected (but not a member of) a ring.
@@ -352,6 +352,7 @@ class Atom:
             hydrogenCount = 0
         if charge is None:
             charge = 0
+
         key = str(hydrogenCount) + element + str(charge)
         if key in self.attachedPseudoElements:
             self.attachedPseudoElements[key]['count'] += 1
@@ -378,7 +379,7 @@ class Atom:
 
     def isHeteroAtom(self):
         'Returns whether this atom is a heteroatom (not C and not H).'
-        return self.element != 'C' and self.element != 'H'
+        return self.element not in ('C', 'H')
 
     def addAnchoredRing(self, ringId):
         'Defines this atom as the anchor for a ring. When doing repositionings of the vertices and the vertex associated with this atom is moved, the center of this ring is moved as well.'
