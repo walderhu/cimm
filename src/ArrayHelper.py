@@ -5,29 +5,20 @@ class ArrayHelper:
     'A static class containing helper functions for array-related tasks.'
 
     @staticmethod
-    def __get_clone_value(value: Any) -> Any:
-        'Checks if a particular object has a clone method'
-        if hasattr(value, 'clone') and callable(getattr(value, 'clone')):
-            return value.clone()
-        return value
-
-    @staticmethod
     def clone(arr: list) -> list:
         'Returns a copy of the object'
         if not hasattr(arr, '__iter__'):
             return {}
         elif isinstance(arr, dict):
-            return {key: ArrayHelper.__get_clone_value(value) for key, value in arr.items()}
+            return {key: value for key, value in arr.items()}
         elif isinstance(arr, (list, tuple)):
-            return [ArrayHelper.__get_clone_value(value) for value in arr]
+            return [value for value in arr]
         elif isinstance(arr, str):
             return {str(i): symbol for i, symbol in enumerate(arr)}
 
     @staticmethod
     def equals(arrA: list, arrB: list) -> bool:
         'Checks 2 objects for equality'
-        if any(not hasattr(x, '__iter__') or isinstance(x, str) for x in (arrA, arrB)):
-            raise TypeError
         return len(arrA) == len(arrB) and all(a == b for a, b in zip(sorted(arrA), sorted(arrB)))
 
     @staticmethod
@@ -40,9 +31,11 @@ class ArrayHelper:
             if isinstance(item, str):
                 elements.append(item)
             elif hasattr(item, '__iter__'):
-                elements.append(ArrayHelper.print(item, sep=',', beg='', end=''))
+                elements.append(ArrayHelper.print(
+                    item, sep=',', beg='', end=''))
             else:
-                elements.append(str(item.id) if hasattr(item, "id") else str(item))
+                elements.append(str(item.id) if hasattr(
+                    item, "id") else str(item))
         return f'{beg}{sep.join(elements)}{end}'
 
     @staticmethod

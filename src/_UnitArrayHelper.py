@@ -83,12 +83,18 @@ class TestAddFunction(unittest.TestCase):
         obj = [
             [1, 2, [3, 4], [5, [6, 7], 8]],
             [[1, 2], [3, 4]],
-            'hello', 
+            'hello',
             (1, 2, 3, 4),
             list('cimm'),
+            []
         ]
         self.assertTrue(all(map(testing, obj)))
 
+    def test_each_method(self):
+        arr = [895, 5, 34, 534]
+        result = []
+        ArrayHelper.each(arr, callback=lambda item: result.append(item * 2))
+        self.assertEqual(result, [1790, 10, 68, 1068])
 
 
 if __name__ == '__main__':
