@@ -1,20 +1,19 @@
-'Testing the Atom module'
+'Testing the Edge module'
 import unittest
 import execjs
-from Atom import Atom
+from Edge import Edge
 
 
 class TestAddFunction(unittest.TestCase):
     def __init__(self, methodName: str = "runTest") -> None:
         super().__init__(methodName)
-        with open('js/Atom.js', 'r') as file:
+        with open('js/Edge.js', 'r') as file:
             self.ctx = execjs.compile(file.read())
 
-    def test_check_atomicNumbers(self):
-        res_js = self.ctx.eval("ArrayHelper.maxBonds")
-        res_py = Atom.maxBonds
-        print(res_js)
-        print(res_py)
+    def test_check_bonds(self):
+        res_js = self.ctx.eval("Edge.bonds")
+        res_py = Edge.bonds
+        print(res_js == res_py)
 
 
 if __name__ == '__main__':

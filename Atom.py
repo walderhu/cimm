@@ -1,5 +1,4 @@
-# from ArrayHelper import contains
-from ArrayHelper import ArrayHelper.contains
+from ArrayHelper import ArrayHelper
 
 
 class Atom:
@@ -335,7 +334,7 @@ class Atom:
         return self.element != 'C' and self.element != 'H'
 
     def addAnchoredRing(self, ringId):
-        if not contains(self.anchoredRings, {'value': ringId}):
+        if not ArrayHelper.contains(self.anchoredRings, {'value': ringId}):
             self.anchoredRings.append(ringId)
 
     def getRingbondCount(self):
