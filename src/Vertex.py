@@ -4,6 +4,7 @@ from ArrayHelper import ArrayHelper
 from Vector2 import Vector2
 from Atom import Atom
 
+
 class Vertex:
     """ A class representing a vertex.
 - id The id of this vertex.
@@ -39,7 +40,6 @@ class Vertex:
         self.neighbours = []
         self.neighbouringElements = []
         self.forcePositioned = False
-
 
     def setPosition(self, x: float, y: float) -> None:
         'Set the 2D coordinates of the vertex.'
@@ -104,10 +104,12 @@ has property hasAttachedPseudoElements set to true."""
         'Clones this vertex and returns the clone.'
         clone = Vertex(self.value, self.position.x, self.position.y)
         clone.id = self.id
-        clone.previousPosition = Vector2(self.previousPosition.x, self.previousPosition.y)
+        clone.previousPosition = Vector2(
+            self.previousPosition.x, self.previousPosition.y)
         clone.parentVertexId = self.parentVertexId
         clone.children = ArrayHelper.clone(self.children)
-        clone.spanningTreeChildren = ArrayHelper.clone(self.spanningTreeChildren)
+        clone.spanningTreeChildren = ArrayHelper.clone(
+            self.spanningTreeChildren)
         clone.edges = ArrayHelper.clone(self.edges)
         clone.positioned = self.positioned
         clone.angle = self.angle
@@ -118,7 +120,7 @@ has property hasAttachedPseudoElements set to true."""
         'Returns true if this vertex and the supplied vertex both have the same id, else returns false.'
         return self.id == vertex.id
 
-    def getAngle(self, referenceVector: 'Vector2'=None, returnAsDegrees: bool=False) -> float:
+    def getAngle(self, referenceVector: 'Vector2' = None, returnAsDegrees: bool = False) -> float:
         """Returns the angle of this vertexes positional vector. 
     If a reference vector is supplied in relations to this vector, else in relations to the coordinate system."""
         if not referenceVector:
@@ -129,10 +131,11 @@ has property hasAttachedPseudoElements set to true."""
             return MathHelper.toDeg(u.angle())
         return u.angle()
 
-    def getTextDirection(self, vertices: List['Vertex'], onlyHorizontal: bool=False) -> str:
+    def getTextDirection(self, vertices: List['Vertex'], onlyHorizontal: bool = False) -> str:
         'Returns the suggested text direction when text is added at the position of this vertex.'
         neighbours = self.get_drawn_neighbours(vertices)
-        angles = [self.get_angle(vertices[neighbour].position) for neighbour in neighbours]
+        angles = [self.get_angle(vertices[neighbour].position)
+                  for neighbour in neighbours]
         textAngle = MathHelper.mean_angle(angles)
         if len(vertices) == 1:
             return 'right'
@@ -155,7 +158,7 @@ has property hasAttachedPseudoElements set to true."""
         else:
             return 'down'
 
-    def getNeighbours(self, vertexId: float=None) -> List[float]:
+    def getNeighbours(self, vertexId: float = None) -> List[float]:
         'Returns an array of ids of neighbouring vertices.'
         return self.neighbours.copy() if vertexId == None else [elem for elem in self.neighbours if elem != vertexId]
 
@@ -167,9 +170,10 @@ has property hasAttachedPseudoElements set to true."""
         'Returns the number of neighbours of this vertex.'
         return self.neighbourCount
 
-    def getSpanningTreeNeighbours(self, vertexId: float=None) -> List[float]:
+    def getSpanningTreeNeighbours(self, vertexId: float = None) -> List[float]:
         'Returns a list of ids of vertices neighbouring this one in the original spanning tree, excluding the ringbond connections.'
-        neighbours = [elem for elem in self.spanningTreeChildren if (vertexId is None) or (elem != vertexId)]
+        neighbours = [elem for elem in self.spanningTreeChildren if (
+            vertexId is None) or (elem != vertexId)]
         if (self.parentVertexId is not None) and ((vertexId is None) or (vertexId != self.parentVertexId)):
             neighbours.append(self.parentVertexId)
         return neighbours

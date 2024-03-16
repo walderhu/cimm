@@ -5,6 +5,7 @@ from Vertex import Vertex
 from RingConnection import RingConnection
 from typing import List, Callable
 
+
 class Ring:
     """A class representing a ring.
 id The id of this ring.
@@ -68,7 +69,7 @@ canFlip A boolean indicating whether or not this ring allows flipping of attache
         'Returns the angle of this ring in relation to the coordinate system.'
         return pi - self.centralAngle
 
-    def each_member(self, vertices: List['Vertex'], callback: Callable, startVertexId: float=None, previousVertexId: float=None) -> None:
+    def each_member(self, vertices: List['Vertex'], callback: Callable, startVertexId: float = None, previousVertexId: float = None) -> None:
         'Loops over the members of this ring from a given start position in a direction opposite to the vertex id passed as the previousId.'
         if startVertexId in (None, 0):
             startVertexId = self.members[0]
@@ -77,7 +78,8 @@ canFlip A boolean indicating whether or not this ring allows flipping of attache
         while (current is not None) and (max_iter < 100):
             prev = current
             callback(prev)
-            current = vertices[current].get_next_in_ring(vertices, self.id, previousVertexId)
+            current = vertices[current].get_next_in_ring(
+                vertices, self.id, previousVertexId)
             previousVertexId = prev
             if current == startVertexId:
                 current = None
@@ -87,7 +89,8 @@ canFlip A boolean indicating whether or not this ring allows flipping of attache
         'Returns an array containing the neighbouring rings of this ring ordered by ring size.'
         orderedNeighbours = [None] * len(self.neighbours)
         for i, neighbour in enumerate(self.neighbours):
-            vertices = RingConnection.get_vertices(ringConnections, self.id, neighbour)
+            vertices = RingConnection.get_vertices(
+                ringConnections, self.id, neighbour)
             orderedNeighbours[i] = {
                 'n': len(vertices),
                 'neighbour': neighbour
@@ -108,5 +111,3 @@ canFlip A boolean indicating whether or not this ring allows flipping of attache
     def contains(self, vertexId: float) -> bool:
         'Checks whether or not this ring contains a member with a given vertex id.'
         return vertexId in self.members
-
-
