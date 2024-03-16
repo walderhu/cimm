@@ -5,7 +5,37 @@ from ArrayHelper import ArrayHelper
 
 
 class Atom:
-    'A class representing an atom.'
+    """A class representing an atom.
+The element symbol of this atom. Single-letter symbols are always uppercase. Examples: H, C, F, Br, Si, ...
+A boolean indicating whether or not this atom is drawn explicitly (for example, a carbon atom). This overrides the default behaviour.
+ringbonds An array containing the ringbond ids and bond types as specified in the original SMILE.
+branchBond The branch bond as defined in the SMILES.
+ringbonds[].id The ringbond id as defined in the SMILES.
+ringbonds[].bondType The bond type of the ringbond as defined in the SMILES.
+rings The ids of rings which contain this atom.
+bondType The bond type associated with this array. Examples: -, =, #, ...
+isBridge A boolean indicating whether or not this atom is part of a bridge in a bridged ring (contained by the largest ring).
+isBridgeNode A boolean indicating whether or not this atom is a bridge node (a member of the largest ring in a bridged ring which is connected to a bridge-atom).
+originalRings Used to back up rings when they are replaced by a bridged ring.
+bridgedRing The id of the bridged ring if the atom is part of a bridged ring.
+anchoredRings The ids of the rings that are anchored to this atom. The centers of anchored rings are translated when this atom is translated.
+bracket If this atom is defined as a bracket atom in the original SMILES, this object contains all the bracket information. Example: (hcount: (Number), charge: ['--', '-', '+', '++'], isotope: (Number) ).
+plane Specifies on which "plane" the atoms is in stereochemical deptictions (-1 back, 0 middle, 1 front).
+attachedPseudoElements A map with containing information for pseudo elements or concatinated elements. The key is comprised of the element symbol and the hydrogen count.
+attachedPseudoElement[].element The element symbol.
+attachedPseudoElement[].count The number of occurences that match the key.
+attachedPseudoElement[].hyrogenCount The number of hydrogens attached to each atom matching the key.
+hasAttachedPseudoElements A boolean indicating whether or not this attom will be drawn with an attached pseudo element or concatinated elements.
+isDrawn A boolean indicating whether or not this atom is drawn. In contrast to drawExplicit, the bond is drawn neither.
+isConnectedToRing A boolean indicating whether or not this atom is directly connected (but not a member of) a ring.
+neighbouringElements An array containing the element symbols of neighbouring atoms.
+isPartOfAromaticRing A boolean indicating whether or not this atom is part of an explicitly defined aromatic ring. Example: c1ccccc1.
+bondCount The number of bonds in which this atom is participating.
+chirality The chirality of this atom if it is a stereocenter (R or S).
+priority The priority of this atom acording to the CIP rules, where 0 is the highest priority.
+mainChain A boolean indicating whether or not this atom is part of the main chain (used for chirality).
+hydrogenDirection The direction of the hydrogen, either up or down. Only for stereocenters with and explicit hydrogen.
+subtreeDepth The depth of the subtree coming from a stereocenter. """
 
     # A map mapping element symbols to the atomic number.
     atomicNumbers = {
@@ -279,38 +309,7 @@ class Atom:
     }
 
     def __init__(self, element: str, bondType: str = '-'):
-        """ The constructor of the class Atom.
-The element symbol of this atom. Single-letter symbols are always uppercase. Examples: H, C, F, Br, Si, ...
-A boolean indicating whether or not this atom is drawn explicitly (for example, a carbon atom). This overrides the default behaviour.
-ringbonds An array containing the ringbond ids and bond types as specified in the original SMILE.
-branchBond The branch bond as defined in the SMILES.
-ringbonds[].id The ringbond id as defined in the SMILES.
-ringbonds[].bondType The bond type of the ringbond as defined in the SMILES.
-rings The ids of rings which contain this atom.
-bondType The bond type associated with this array. Examples: -, =, #, ...
-isBridge A boolean indicating whether or not this atom is part of a bridge in a bridged ring (contained by the largest ring).
-isBridgeNode A boolean indicating whether or not this atom is a bridge node (a member of the largest ring in a bridged ring which is connected to a bridge-atom).
-originalRings Used to back up rings when they are replaced by a bridged ring.
-bridgedRing The id of the bridged ring if the atom is part of a bridged ring.
-anchoredRings The ids of the rings that are anchored to this atom. The centers of anchored rings are translated when this atom is translated.
-bracket If this atom is defined as a bracket atom in the original SMILES, this object contains all the bracket information. Example: (hcount: (Number), charge: ['--', '-', '+', '++'], isotope: (Number) ).
-plane Specifies on which "plane" the atoms is in stereochemical deptictions (-1 back, 0 middle, 1 front).
-attachedPseudoElements A map with containing information for pseudo elements or concatinated elements. The key is comprised of the element symbol and the hydrogen count.
-attachedPseudoElement[].element The element symbol.
-attachedPseudoElement[].count The number of occurences that match the key.
-attachedPseudoElement[].hyrogenCount The number of hydrogens attached to each atom matching the key.
-hasAttachedPseudoElements A boolean indicating whether or not this attom will be drawn with an attached pseudo element or concatinated elements.
-isDrawn A boolean indicating whether or not this atom is drawn. In contrast to drawExplicit, the bond is drawn neither.
-isConnectedToRing A boolean indicating whether or not this atom is directly connected (but not a member of) a ring.
-neighbouringElements An array containing the element symbols of neighbouring atoms.
-isPartOfAromaticRing A boolean indicating whether or not this atom is part of an explicitly defined aromatic ring. Example: c1ccccc1.
-bondCount The number of bonds in which this atom is participating.
-chirality The chirality of this atom if it is a stereocenter (R or S).
-priority The priority of this atom acording to the CIP rules, where 0 is the highest priority.
-mainChain A boolean indicating whether or not this atom is part of the main chain (used for chirality).
-hydrogenDirection The direction of the hydrogen, either up or down. Only for stereocenters with and explicit hydrogen.
-subtreeDepth The depth of the subtree coming from a stereocenter. """
-
+        'The constructor of the class Atom.'
         self.idx = None
         self.element = element.upper() if len(element) == 1 else element
         self.drawExplicit = False

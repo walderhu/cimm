@@ -3,15 +3,16 @@ from Vector2 import Vector2
 
 
 class Line:
-    def __init__(self, from_=Vector2(0, 0), to=Vector2(0, 0), elementFrom=None, elementTo=None, chiralFrom=False, chiralTo=False):
-        """ A class representing a line.
-{from_: Vector2} [from=new Vector2(0, 0)] A vector marking the beginning of the line.
-{to: Vector2} [to=new Vector2(0, 0)] A vector marking the end of the line.
-{elementFrom: str} [elementFrom=null] A one-letter representation of the element associated with the vector marking the beginning of the line.
-{elementTo: str} [elementTo=null] A one-letter representation of the element associated with the vector marking the end of the line.
-{chiralFrom: bool} [chiralFrom=false] Whether or not the from atom is a chiral center.
-{chiralTo: bool} [chiralTo=false] Whether or not the to atom is a chiral center. """
+    """ A class representing a line.
+[from=new Vector2(0, 0)] A vector marking the beginning of the line.
+[to=new Vector2(0, 0)] A vector marking the end of the line.
+[elementFrom=null] A one-letter representation of the element associated with the vector marking the beginning of the line.
+[elementTo=null] A one-letter representation of the element associated with the vector marking the end of the line.
+[chiralFrom=false] Whether or not the from atom is a chiral center.
+[chiralTo=false] Whether or not the to atom is a chiral center. """
 
+    def __init__(self, from_=Vector2(0, 0), to=Vector2(0, 0), elementFrom=None, elementTo=None, chiralFrom=False, chiralTo=False):
+        'The constructor for the class Line.'
         self.from_ = from_
         self.to = to
         self.elementFrom = elementFrom
