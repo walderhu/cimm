@@ -51,7 +51,10 @@ class ArrayHelper:
 
     @staticmethod
     def contains(arr: dict, options: Any) -> bool:
-        'Checks whether or not an array contains a given value. the options object passed as a second argument can contain three properties. value: The value to be searched for. property: The property that is to be searched for a given value. func: A function that is used as a callback to return either true or false in order to do a custom comparison'
+        """Checks whether or not an array contains a given value.
+The options object passed as a second argument can contain three properties.
+Value: The value to be searched for. property: The property that is to be searched for a given value.
+Func: A function that is used as a callback to return either true or false in order to do a custom comparison"""
         if not options.get('property') and not options.get('func'):
             for item in arr:
                 if item == options.get('value'):
@@ -83,7 +86,9 @@ class ArrayHelper:
 
     @staticmethod
     def toggle(arr: list, value: Any) -> list:
-        'Toggles the value of an array. If a value is not contained in an array, the array returned will contain all the values of the original array including the value. If a value is contained in an array, the array returned will contain all the values of the original array excluding the value.'
+        """Toggles the value of an array. If a value is not contained in an array,
+the array returned will contain all the values of the original array including the value. 
+If a value is contained in an array, the array returned will contain all the values of the original array excluding the value."""
         if value in arr:
             new_arr = ArrayHelper.remove(arr, value)
         else:

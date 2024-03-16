@@ -64,16 +64,19 @@ class Vector2:
         return sqrt((vec.x - self.x) * (vec.x - self.x) + (vec.y - self.y) * (vec.y - self.y))
 
     def distanceSq(self, vec: 'Vector2') -> float:
-        'Returns the squared euclidean distance between this vector and another vector. When only the relative distances of a set of vectors are needed, this is is less expensive than using distance(vec).'
+        """Returns the squared euclidean distance between this vector and another vector.
+When only the relative distances of a set of vectors are needed, this is is less expensive than using distance(vec)."""
         return (vec.x - self.x) * (vec.x - self.x) + (vec.y - self.y) * (vec.y - self.y)
 
     def clockwise(self, vec: 'Vector2') -> int:
-        'Checks whether or not this vector is in a clockwise or counter-clockwise rotational direction compared to another vector in relation to the coordinate system.'
+        """Checks whether or not this vector is in a clockwise or counter-clockwise rotational
+direction compared to another vector in relation to the coordinate system."""
         determinant = self.x * vec.y - self.y * vec.x
         return 1 if determinant > 0 else (-1 if determinant < 0 else 0)
 
     def relativeClockwise(self, center: 'Vector2', vec: 'Vector2') -> int:
-        'Checks whether or not this vector is in a clockwise or counter-clockwise rotational direction compared to another vector in relation to an arbitrary third vector.'
+        """Checks whether or not this vector is in a clockwise or counter-clockwise rotational
+ direction compared to another vector in relation to an arbitrary third vector."""
         determinant = (self.y - center.y) * (vec.x - center.x) - \
             (self.x - center.x) * (vec.y - center.y)
         return 1 if determinant > 0 else (-1 if determinant < 0 else 0)
@@ -96,7 +99,9 @@ class Vector2:
         return self
 
     def rotateTo(self, vec: 'Vector2', center: 'Vector2', offsetAngle=0.0) -> 'Vector2':
-        'Rotate a vector around a given center to the same angle as another vector (so that the two vectors and the center are in a line, with both vectors on one side of the center), keeps the distance from this vector to the center.'
+        """Rotate a vector around a given center to the same angle as another vector 
+(so that the two vectors and the center are in a line, with both vectors on one side of the center),
+ keeps the distance from this vector to the center."""
         self.x += 0.001
         self.y -= 0.001
         angle = Vector2.angle(vec - center, self - center)

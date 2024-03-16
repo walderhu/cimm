@@ -11,14 +11,14 @@ class Edge:
 
     def __init__(self, sourceId: int, targetId: int, weight: int = 1):
         """ The constructor for the class Edge.
-{id: int} id The id of this edge.
-{sourceId: int} sourceId The id of the source vertex.
-{targetId: int} targetId The id of the target vertex.
-{weight: int} weight The weight of this edge. That is, the degree of the bond (single bond = 1, double bond = 2, etc).
-{bondType: str} [bondType='-'] The bond type of this edge.
-{isPartOfAromaticRing: bool} [isPartOfAromaticRing=false] Whether or not this edge is part of an aromatic ring.
-{center: bool} [center=false] Wheter or not the bond is centered. For example, this affects straight double bonds.
-{wedge: str} [wedge=''] Wedge direction. Either '', 'up' or 'down' """
+id The id of this edge.
+sourceId The id of the source vertex.
+targetId The id of the target vertex.
+weight The weight of this edge. That is, the degree of the bond (single bond = 1, double bond = 2, etc).
+[bondType='-'] The bond type of this edge.
+[isPartOfAromaticRing=false] Whether or not this edge is part of an aromatic ring.
+[center=false] Wheter or not the bond is centered. For example, this affects straight double bonds.
+[wedge=''] Wedge direction. Either '', 'up' or 'down' """
 
         self.id = None
         self.sourceId = sourceId
