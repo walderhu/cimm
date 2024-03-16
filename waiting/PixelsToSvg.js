@@ -1,5 +1,3 @@
-// Adapted from https://codepen.io/shshaw/pen/XbxvNj by 
-
 function convertImage(img) {
     "use strict";
 
@@ -27,28 +25,19 @@ function convertImage(img) {
         return 'rgba(' + r + ',' + g + ',' + b + ',' + (a / 255) + ')';
     }
 
-    // Optimized for horizontal lines
     function makePathData(x, y, w) { return ('M' + x + ' ' + y + 'h' + w + ''); }
     function makePath(color, data) { return '<path stroke="' + color + '" d="' + data + '" />\n'; }
 
     function colorsToPaths(colors) {
-
         var output = "";
-
-        // Loop through each color to build paths
         each(colors, function (color, values) {
             var orig = color;
             color = getColor.apply(null, color.split(','));
-
             if (color === false) { return; }
-
             var paths = [];
             var curPath;
             var w = 1;
-
-            // Loops through each color's pixels to optimize paths
             each(values, function () {
-
                 if (curPath && this[1] === curPath[1] && this[0] === (curPath[0] + w)) {
                     w++;
                 } else {
@@ -58,13 +47,10 @@ function convertImage(img) {
                     }
                     curPath = this;
                 }
-
             });
-
             paths.push(makePathData(curPath[0], curPath[1], w)); // Finish last path
             output += makePath(color, paths.join(''));
         });
-
         return output;
     }
 
@@ -78,7 +64,6 @@ function convertImage(img) {
             y = 0,
             i = 0,
             color;
-
         for (; i < len; i += 4) {
             if (data[i + 3] > 0) {
                 color = data[i] + ',' + data[i + 1] + ',' + data[i + 2] + ',' + data[i + 3];
@@ -88,7 +73,6 @@ function convertImage(img) {
                 colors[color].push([x, y]);
             }
         }
-
         return colors;
     }
 
