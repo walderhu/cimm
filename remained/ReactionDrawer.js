@@ -3,7 +3,6 @@ const SvgWrapper = require('./SvgWrapper');
 const Options = require('./Options');
 const ThemeManager = require('./ThemeManager');
 const formulaToCommonName = require('./FormulaToCommonName');
-
 class ReactionDrawer {
     /**
      * The constructor for the class ReactionDrawer.
@@ -31,13 +30,10 @@ class ReactionDrawer {
                 normalize: false
             }
         }
-
         this.opts = Options.extend(true, this.defaultOptions, options);
-
         this.drawer = new SvgDrawer(moleculeOptions);
         this.molOpts = this.drawer.opts;
     }
-
     /**
    * Draws the parsed reaction smiles data to a canvas element.
    *
@@ -54,12 +50,10 @@ class ReactionDrawer {
    */
     draw(reaction, target, themeName = 'light', weights = null, textAbove = '{reagents}', textBelow = '', infoOnly = false) {
         this.themeManager = new ThemeManager(this.molOpts.themes, themeName);
-
         // Normalize the weights over the reaction molecules
         if (this.opts.weights.normalize) {
             let max = -Number.MAX_SAFE_INTEGER;
             let min = Number.MAX_SAFE_INTEGER;
-
             if (weights.hasOwnProperty('reactants')) {
                 for (let i = 0; i < weights.reactants.length; i++) {
                     for (let j = 0; j < weights.reactants[i].length; j++) {
@@ -72,7 +66,6 @@ class ReactionDrawer {
                     }
                 }
             }
-
             if (weights.hasOwnProperty('reagents')) {
                 for (let i = 0; i < weights.reagents.length; i++) {
                     for (let j = 0; j < weights.reagents[i].length; j++) {
@@ -85,7 +78,6 @@ class ReactionDrawer {
                     }
                 }
             }
-
             if (weights.hasOwnProperty('products')) {
                 for (let i = 0; i < weights.products.length; i++) {
                     for (let j = 0; j < weights.products[i].length; j++) {
@@ -98,12 +90,10 @@ class ReactionDrawer {
                     }
                 }
             }
-
             let abs_max = Math.max(Math.abs(min), Math.abs(max));
             if (abs_max === 0.0) {
                 abs_max = 1;
             }
-
             if (weights.hasOwnProperty('reactants')) {
                 for (let i = 0; i < weights.reactants.length; i++) {
                     for (let j = 0; j < weights.reactants[i].length; j++) {
@@ -111,7 +101,6 @@ class ReactionDrawer {
                     }
                 }
             }
-
             if (weights.hasOwnProperty('reagents')) {
                 for (let i = 0; i < weights.reagents.length; i++) {
                     for (let j = 0; j < weights.reagents[i].length; j++) {
@@ -119,7 +108,6 @@ class ReactionDrawer {
                     }
                 }
             }
-
             if (weights.hasOwnProperty('products')) {
                 for (let i = 0; i < weights.products.length; i++) {
                     for (let j = 0; j < weights.products[i].length; j++) {
@@ -128,9 +116,7 @@ class ReactionDrawer {
                 }
             }
         }
-
         let svg = null;
-
         if (target === null || target === 'svg') {
             svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
             svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
@@ -141,15 +127,11 @@ class ReactionDrawer {
         } else {
             svg = target;
         }
-
         while (svg.firstChild) {
             svg.removeChild(svg.firstChild);
         }
-
         let elements = [];
-
         let maxHeight = 0.0
-
         // Reactants
         for (var i = 0; i < reaction.reactants.length; i++) {
             if (i > 0) {
@@ -159,53 +141,41 @@ class ReactionDrawer {
                     svg: this.getPlus()
                 });
             }
-
             let reactantWeights = null;
             if (weights && weights.hasOwnProperty('reactants') && weights.reactants.length > i) {
                 reactantWeights = weights.reactants[i];
             }
-
             let reactantSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-
             this.drawer.draw(reaction.reactants[i], reactantSvg, themeName, reactantWeights, infoOnly, [], this.opts.weights.normalize);
-
             let element = {
                 width: reactantSvg.viewBox.baseVal.width * this.opts.scale,
                 height: reactantSvg.viewBox.baseVal.height * this.opts.scale,
                 svg: reactantSvg
             };
-
             elements.push(element);
-
             if (element.height > maxHeight) {
                 maxHeight = element.height;
             }
         }
-
         // Arrow
         elements.push({
             width: this.opts.arrow.length * this.opts.scale,
             height: this.opts.arrow.headSize * 2.0 * this.opts.scale,
             svg: this.getArrow()
         });
-
         // Text above the arrow / reagents
         let reagentsText = "";
         for (var i = 0; i < reaction.reagents.length; i++) {
             if (i > 0) {
                 reagentsText += ", "
             }
-
             let text = this.drawer.getMolecularFormula(reaction.reagents[i]);
             if (text in formulaToCommonName) {
                 text = formulaToCommonName[text];
             }
-
             reagentsText += SvgWrapper.replaceNumbersWithSubscript(text);
         }
-
         textAbove = textAbove.replace('{reagents}', reagentsText);
-
         const topText = SvgWrapper.writeText(
             textAbove,
             this.themeManager,
@@ -213,9 +183,7 @@ class ReactionDrawer {
             this.opts.fontFamily,
             this.opts.arrow.length * this.opts.scale
         );
-
         let centerOffsetX = (this.opts.arrow.length * this.opts.scale - topText.width) / 2.0;
-
         elements.push({
             svg: topText.svg,
             height: topText.height,
@@ -224,7 +192,6 @@ class ReactionDrawer {
             offsetY: -(topText.height / 2.0) - this.opts.arrow.margin,
             position: 'relative'
         });
-
         // Text below arrow
         const bottomText = SvgWrapper.writeText(
             textBelow,
@@ -233,9 +200,7 @@ class ReactionDrawer {
             this.opts.fontFamily,
             this.opts.arrow.length * this.opts.scale
         );
-
         centerOffsetX = (this.opts.arrow.length * this.opts.scale - bottomText.width) / 2.0;
-
         elements.push({
             svg: bottomText.svg,
             height: bottomText.height,
@@ -244,7 +209,6 @@ class ReactionDrawer {
             offsetY: bottomText.height / 2.0 + this.opts.arrow.margin,
             position: 'relative'
         });
-
         // Products
         for (var i = 0; i < reaction.products.length; i++) {
             if (i > 0) {
@@ -254,86 +218,66 @@ class ReactionDrawer {
                     svg: this.getPlus()
                 });
             }
-
             let productWeights = null;
             if (weights && weights.hasOwnProperty('products') && weights.products.length > i) {
                 productWeights = weights.products[i];
             }
-
             let productSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-
             this.drawer.draw(reaction.products[i], productSvg, themeName, productWeights, infoOnly, [], this.opts.weights.normalize);
-
             let element = {
                 width: productSvg.viewBox.baseVal.width * this.opts.scale,
                 height: productSvg.viewBox.baseVal.height * this.opts.scale,
                 svg: productSvg
             };
-
             elements.push(element);
-
             if (element.height > maxHeight) {
                 maxHeight = element.height;
             }
         }
-
         let totalWidth = 0.0;
-
         elements.forEach(element => {
             let offsetX = element.offsetX ?? 0.0;
             let offsetY = element.offsetY ?? 0.0;
-
             element.svg.setAttributeNS(null, 'x', Math.round(totalWidth + offsetX));
             element.svg.setAttributeNS(null, 'y', Math.round(((maxHeight - element.height) / 2.0) + offsetY));
             element.svg.setAttributeNS(null, 'width', Math.round(element.width));
             element.svg.setAttributeNS(null, 'height', Math.round(element.height));
             svg.appendChild(element.svg);
-
             if (element.position !== 'relative') {
                 totalWidth += Math.round(element.width + this.opts.spacing + offsetX);
             }
         });
-
         svg.setAttributeNS(null, 'viewBox', `0 0 ${totalWidth} ${maxHeight}`);
         svg.style.width = totalWidth + 'px';
         svg.style.height = maxHeight + 'px';
-
         return svg;
     }
-
     getPlus() {
         let s = this.opts.plus.size;
         let w = this.opts.plus.thickness;
         let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         let rect_h = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
         let rect_v = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-
         svg.setAttributeNS(null, 'id', 'plus');
-
         rect_h.setAttributeNS(null, 'x', 0);
         rect_h.setAttributeNS(null, 'y', s / 2.0 - w / 2.0);
         rect_h.setAttributeNS(null, 'width', s);
         rect_h.setAttributeNS(null, 'height', w);
         rect_h.setAttributeNS(null, 'fill', this.themeManager.getColor("C"));
-
         rect_v.setAttributeNS(null, 'x', s / 2.0 - w / 2.0);
         rect_v.setAttributeNS(null, 'y', 0);
         rect_v.setAttributeNS(null, 'width', w);
         rect_v.setAttributeNS(null, 'height', s);
         rect_v.setAttributeNS(null, 'fill', this.themeManager.getColor("C"));
-
         svg.appendChild(rect_h);
         svg.appendChild(rect_v);
         svg.setAttributeNS(null, 'viewBox', `0 0 ${s} ${s}`);
-
         return svg;
     }
-
     getArrowhead() {
         let s = this.opts.arrow.headSize;
         let marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
         let polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-
         marker.setAttributeNS(null, 'id', 'arrowhead');
         marker.setAttributeNS(null, 'viewBox', `0 0 ${s} ${s}`);
         marker.setAttributeNS(null, 'markerUnits', 'userSpaceOnUse');
@@ -343,20 +287,15 @@ class ReactionDrawer {
         marker.setAttributeNS(null, 'refY', s / 2);
         marker.setAttributeNS(null, 'orient', 'auto');
         marker.setAttributeNS(null, 'fill', this.themeManager.getColor("C"));
-
         polygon.setAttributeNS(null, 'points', `0 0, ${s} ${s / 2}, 0 ${s}`)
-
         marker.appendChild(polygon);
-
         return marker;
     }
-
     getCDArrowhead() {
         let s = this.opts.arrow.headSize;
         let sw = s * (7 / 4.5);
         let marker = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
         let path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-
         marker.setAttributeNS(null, 'id', 'arrowhead');
         marker.setAttributeNS(null, 'viewBox', `0 0 ${sw} ${s}`);
         marker.setAttributeNS(null, 'markerUnits', 'userSpaceOnUse');
@@ -366,28 +305,20 @@ class ReactionDrawer {
         marker.setAttributeNS(null, 'refY', 2.2);
         marker.setAttributeNS(null, 'orient', 'auto');
         marker.setAttributeNS(null, 'fill', this.themeManager.getColor("C"));
-
         path.setAttributeNS(null, 'style', 'fill-rule:nonzero;');
         path.setAttributeNS(null, 'd', 'm 0 0 l 7 2.25 l -7 2.25 c 0 0 0.735 -1.084 0.735 -2.28 c 0 -1.196 -0.735 -2.22 -0.735 -2.22 z');
-
         marker.appendChild(path);
-
         return marker;
     }
-
     getArrow() {
         let s = this.opts.arrow.headSize;
         let l = this.opts.arrow.length;
-
         let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         let defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
         let line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-
         defs.appendChild(this.getCDArrowhead());
         svg.appendChild(defs);
-
         svg.setAttributeNS(null, 'id', 'arrow');
-
         line.setAttributeNS(null, 'x1', 0.0);
         line.setAttributeNS(null, 'y1', -this.opts.arrow.thickness / 2.0);
         line.setAttributeNS(null, 'x2', l);
@@ -395,12 +326,9 @@ class ReactionDrawer {
         line.setAttributeNS(null, 'stroke-width', this.opts.arrow.thickness);
         line.setAttributeNS(null, 'stroke', this.themeManager.getColor("C"));
         line.setAttributeNS(null, 'marker-end', 'url(#arrowhead)');
-
         svg.appendChild(line);
         svg.setAttributeNS(null, 'viewBox', `0 ${-s / 2.0} ${l + s * (7 / 4.5)} ${s}`);
-
         return svg;
     }
 }
-
 module.exports = ReactionDrawer;
