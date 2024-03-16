@@ -16,6 +16,8 @@ class Graph {
         this._time = 0;
         this._init(parseTree);
     }
+
+
     _init(node, order = 0, parentVertexId = null, isBranch = false) {
         const element = node.atom.element ? node.atom.element : node.atom;
         let atom = new Atom(element, node.bond);
@@ -81,6 +83,10 @@ class Graph {
             this._init(node.next, node.branchCount + offset, vertex.id);
         }
     }
+
+
+
+
     clear() {
         this.vertices = Array();
         this.edges = Array();
@@ -120,6 +126,7 @@ class Graph {
     hasEdge(vertexIdA, vertexIdB) {
         return this.vertexIdsToEdgeId[vertexIdA + '_' + vertexIdB] !== undefined
     }
+    // 
     getVertexList() {
         let arr = [this.vertices.length];
         for (var i = 0; i < this.vertices.length; i++) {

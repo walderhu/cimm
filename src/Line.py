@@ -12,7 +12,7 @@ class Line:
 [chiralTo=false] Whether or not the to atom is a chiral center. """
 
     def __init__(self, from_=Vector2(0, 0), to=Vector2(0, 0), elementFrom=None, elementTo=None, chiralFrom=False, chiralTo=False):
-        'The constructor for the class Line.'
+        'The constructor for the class Line.    '
         self.from_ = from_
         self.to = to
         self.elementFrom = elementFrom

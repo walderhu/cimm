@@ -1,4 +1,3 @@
-from typing import List
 from ArrayHelper import ArrayHelper
 # from Vertex import Vertex
 # from Ring import Ring
