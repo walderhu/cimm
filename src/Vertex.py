@@ -74,9 +74,9 @@ If a hydrogen is implicitly attached to the chiral center, insert as the third c
                     index = 2
                 else:
                     index = 3
-            if self.value.bracket.hcount == None and ringbondIndex == 0:
+            if self.value.bracket.hcount is None and ringbondIndex == 0:
                 index = 1
-            if self.value.bracket.hcount == None and ringbondIndex == 1:
+            if self.value.bracket.hcount is None and ringbondIndex == 1:
                 if len(self.neighbours) < 3:
                     index = 1
                 else:
@@ -130,49 +130,38 @@ has property hasAttachedPseudoElements set to true."""
         return u.angle()
 
     def getTextDirection(self, vertices: List['Vertex'], onlyHorizontal: bool=False) -> str:
-        neighbours = self.getDrawnNeighbours(vertices)
-        angles = []
+        'Returns the suggested text direction when text is added at the position of this vertex.'
+        neighbours = self.get_drawn_neighbours(vertices)
+        angles = [self.get_angle(vertices[neighbour].position) for neighbour in neighbours]
+        textAngle = MathHelper.mean_angle(angles)
         if len(vertices) == 1:
             return 'right'
-        for i in range(len(neighbours)):
-            angles.append(self.getAngle(vertices[neighbours[i]].position))
-        textAngle = MathHelper.meanAngle(angles)
-        if self.isTerminal() or onlyHorizontal:
+        elif self.isTerminal() or onlyHorizontal:
             if round(textAngle * 100) / 100 == 1.57:
-                textAngle = textAngle - 0.2
+                textAngle -= 0.2
             textAngle = round(round(textAngle / MathHelper.PI) * MathHelper.PI)
         else:
             halfPi = MathHelper.PI / 2.0
             textAngle = round(round(textAngle / halfPi) * halfPi)
+
         if textAngle == 2:
             return 'down'
         elif textAngle == -2:
             return 'up'
-        elif textAngle == 0 or textAngle == -0:
+        elif textAngle in (-0, 0):
             return 'right'
-        elif textAngle == 3 or textAngle == -3:
+        elif textAngle in (-3, 3):
             return 'left'
         else:
             return 'down'
 
     def getNeighbours(self, vertexId: float=None) -> List[float]:
         'Returns an array of ids of neighbouring vertices.'
-        if vertexId == None:
-            return self.neighbours.copy()
-        arr = []
-        for i in range(len(self.neighbours)):
-            if self.neighbours[i] != vertexId:
-                arr.append(self.neighbours[i])
-        return arr
+        return self.neighbours.copy() if vertexId == None else [elem for elem in self.neighbours if elem != vertexId]
 
     def getDrawnNeighbours(self, vertices: List['Vertex']) -> List[float]:
         'Returns an array of ids of neighbouring vertices that will be drawn (vertex.value.isDrawn is True).'
-        arr = []
-        for i in range(len(self.neighbours)):
-            if vertices[self.neighbours[i]].value.isDrawn:
-                arr.append(self.neighbours[i])
-        return arr
-        # return [self.neighbours[i] for i in range(len(self.neighbours)) if vertices[self.neighbours[i]].value.isDrawn]
+        return [self.neighbours[i] for i in range(len(self.neighbours)) if vertices[self.neighbours[i]].value.isDrawn]
 
     def getNeighbourCount(self) -> int:
         'Returns the number of neighbours of this vertex.'
@@ -180,19 +169,15 @@ has property hasAttachedPseudoElements set to true."""
 
     def getSpanningTreeNeighbours(self, vertexId: float=None) -> List[float]:
         'Returns a list of ids of vertices neighbouring this one in the original spanning tree, excluding the ringbond connections.'
-        neighbours = []
-        for i in range(len(self.spanningTreeChildren)):
-            if vertexId == None or vertexId != self.spanningTreeChildren[i]:
-                neighbours.append(self.spanningTreeChildren[i])
-        if self.parentVertexId != None:
-            if vertexId == None or vertexId != self.parentVertexId:
-                neighbours.append(self.parentVertexId)
+        neighbours = [elem for elem in self.spanningTreeChildren if (vertexId is None) or (elem != vertexId)]
+        if (self.parentVertexId is not None) and ((vertexId is None) or (vertexId != self.parentVertexId)):
+            neighbours.append(self.parentVertexId)
         return neighbours
 
-    def getNextInRing(self, vertices: List['Vertex'], ringId: float, previousVertexId: float) -> float:
+    def get_next_in_ring(self, vertices: List['Vertex'], ring_id: float, previous_vertex_id: float) -> float:
         'Gets the next vertex in the ring in opposide direction to the supplied vertex id.'
-        neighbours = self.getNeighbours()
-        for i in range(len(neighbours)):
-            if ArrayHelper.contains(vertices[neighbours[i]].value.rings, {'value': ringId}) and neighbours[i] != previousVertexId:
-                return neighbours[i]
-        return None
+        for neighbour in self.getNeighbours():
+            if ring_id in vertices[neighbour].value.rings and neighbour != previous_vertex_id:
+                return neighbour
+        else:
+            return None
