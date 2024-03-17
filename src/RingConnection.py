@@ -16,8 +16,8 @@ vertices A set containing the vertex ids participating in the ring connection.""
         self.firstRingId = firstRing.id
         self.secondRingId = secondRing.id
         self.vertices = set()
-        [self.addVertex(m) for m in firstRing.members\
-          for n in secondRing.members if m == n]
+        [self.addVertex(m) for m in firstRing.members
+         for n in secondRing.members if m == n]
 
     def addVertex(self, vertexId: float) -> None:
         'Adding a vertex to the ring connection.'
