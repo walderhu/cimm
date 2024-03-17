@@ -1,4 +1,3 @@
-4
 const Parser = require('./Parser')
 class Reaction {
     constructor(reactionSmiles) {

@@ -8,6 +8,10 @@ module.exports = (function () {
     ctor.prototype = parent.prototype;
     child.prototype = new ctor();
   }
+
+
+
+
   function peg$SyntaxError(message, expected, found, location) {
     this.message = message;
     this.expected = expected;
