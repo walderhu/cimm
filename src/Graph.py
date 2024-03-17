@@ -82,7 +82,6 @@ isometric A boolean indicating whether or not the SMILES associated with this gr
         if node['hasNext']:
             self.__init(node['next'], node['branchCount'] + offset, vertex.id)
     
-    
     def clear(self):
         'Clears all the elements in this graph (edges and vertices).'
         self.vertices = []
@@ -94,7 +93,6 @@ isometric A boolean indicating whether or not the SMILES associated with this gr
         vertex.id = len(self.vertices)
         self.vertices.append(vertex)
         return vertex.id
-    
     
     def addEdge(self, edge: 'Edge') -> float:
         'Add an edge to the graph.'
@@ -133,5 +131,55 @@ isometric A boolean indicating whether or not the SMILES associated with this gr
         'Returns an array containing source, target arrays of this graphs edges.'
         return [[elem.sourceId, elem.targetId] for elem in self.edges]
     
+    def getAdjacencyMatrix(self) -> List[List[int]]:
+        'Get the adjacency matrix of the graph.'
+        length = len(self.vertices)
+        adjacencyMatrix = [[0] * length for _ in range(length)]
+        for edge in self.edges:
+            adjacencyMatrix[edge.sourceId][edge.targetId] = 1
+            adjacencyMatrix[edge.targetId][edge.sourceId] = 1
+        return adjacencyMatrix   
+        
+    def getComponentsAdjacencyMatrix(self) -> List[List[int]]:
+        """Get the adjacency matrix of the graph with all bridges removed (thus the components).
+        Thus the remaining vertices are all part of ring systems."""
+        adjacencyMatrix = self.getAdjacencyMatrix()
+        for bridge in self.getBridges():
+            adjacencyMatrix[bridge[0]][bridge[1]] = 0
+            adjacencyMatrix[bridge[1]][bridge[0]] = 0
+        return adjacencyMatrix   
     
+    # def getSubgraphAdjacencyMatrix(self, vertexIds: List[int]) -> List[List[int]]:
+    #     'Get the adjacency matrix of a subgraph.'
+    #     length = len(vertexIds)
+    #     adjacencyMatrix = [[0] * length for _ in range(length)]
+    #     for i, sourceId in enumerate(vertexIds):
+    #         for j, targetId in enumerate(vertexIds):
+    #             if i != j and self.hasEdge(sourceId, targetId):
+    #                 adjacencyMatrix[i][j] = 1
+    #     return adjacencyMatrix
+
+    def getSubgraphAdjacencyMatrix(self, vertexIds: List[int]) -> List[List[int]]:
+        'Get the adjacency matrix of a subgraph.'
+        adjacencyMatrix = [[1 if i != j and self.hasEdge(sourceId, targetId) else 0\
+            for i, sourceId in enumerate(vertexIds)]\
+                for j, targetId in enumerate(vertexIds)]
+        return adjacencyMatrix
+
+    def getDistanceMatrix(self) -> List[List[int]]:
+        'Get the distance matrix of the graph.'
+        length = len(self.vertices)
+        adja = self.getAdjacencyMatrix()
+        dist = [[None] * length for _ in range(length)]
+        for i in range(length):
+            for j in range(length):
+                if adja[i][j] == 1:
+                    dist[i][j] = 1
+        for k in range(length):
+            for i in range(length):
+                for j in range(length):
+                    if dist[i][j] > dist[i][k] + dist[k][j]:
+                        dist[i][j] = dist[i][k] + dist[k][j]
+        return dist
+        
     
