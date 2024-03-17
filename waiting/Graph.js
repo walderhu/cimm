@@ -343,6 +343,16 @@ class Graph {
             this.traverseTree(neighbours[i], vertexId, callback, maxDepth, ignoreFirst, depth + 1, visited);
         }
     }
+
+
+
+
+
+
+
+
+
+
     kkLayout(vertexIds, center, startVertexId, ring, bondLength,
         threshold = 0.1, innerThreshold = 0.1, maxIteration = 2000,
         maxInnerIteration = 50, maxEnergy = 1e9) {
@@ -535,6 +545,51 @@ class Graph {
             vertex.forcePositioned = true;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     _bridgeDfs(u, visited, disc, low, parent, adj, outBridges) {
         visited[u] = true;
         disc[u] = low[u] = ++this._time;

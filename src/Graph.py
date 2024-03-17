@@ -5,6 +5,7 @@ from Edge import Edge
 from Ring import Ring
 from Atom import Atom
 
+from math import sin, cos, pow, sqrt
 from typing import List, Dict, Any, Callable, Final, Union
 
 
@@ -272,3 +273,147 @@ calculating the distance matrix between all pairs of vertices in a graph"""
     #     return max + 1
     
     
+    def traverseTree(self, vertexId: float, parentVertexId: float, callback: Callable,\
+        maxDepth: int = 999999, ignoreFirst: bool=False, depth: float=1,\
+            visited: List[int]=None) -> None:
+        'Traverse a sub-tree in the graph.'
+        if visited is None:
+            vesited = []
+        if (depth > maxDepth + 1) or visited[vertexId] == 1:
+            return
+        visited[vertexId] = 1
+        vertex = self.vertices[vertexId]
+        neighbours = vertex.getNeighbours(parentVertexId)
+        if ignoreFirst is False or depth > 1:
+            callback(vertex)
+        for neighbour in neighbours:
+            self.traverseTree(neighbour, vertexId, callback, maxDepth, ignoreFirst, depth + 1, visited)
+
+    def kkLayout(self, vertexIds: List[float], center: 'Vector2', startVertexId: float, ring: 'Ring', bondLength,
+            threshold = 0.1, innerThreshold = 0.1, maxIteration = 2000,
+            maxInnerIteration = 50, maxEnergy = 1e9):
+        """ Positiones the (sub)graph using Kamada and Kawais algorithm for drawing general undirected graphs.
+        https://pdfs.semanticscholar.org/b8d3/bca50ccc573c5cb99f7d201e8acce6618f04.pdf
+        There are undocumented layout parameters. They are undocumented for a reason, so be very careful."""
+        edgeStrength = bondLength
+        length = len(vertexIds)
+        matDist = self.getSubgraphDistanceMatrix(vertexIds)
+        radius = MathHelper.polyCircumradius(500, length)
+        angle = MathHelper.centralAngle(length)
+        a = 0.0
+        arrPositionX, arrPositionY = [0.0] * length, [0.0] * length
+        arrPositioned = [False] * length    
+
+        for i in range(length):
+            vertex = self.vertices[vertexIds[i]]
+            if not vertex.positioned:
+                arrPositionX[i] = center.x + cos(a) * radius
+                arrPositionY[i] = center.y + sin(a) * radius
+            else:
+                arrPositionX[i] = vertex.position.x
+                arrPositionY[i] = vertex.position.y
+            arrPositioned[i] = vertex.positioned
+            a += angle
+
+        matLength = [[bondLength * matDist[i][j] for j in range(length)] for i in range(length)]
+        matStrength = [[edgeStrength * matDist[i][j] ** -2.0 for j in range(length)] for i in range(length)]
+        matEnergy = [[0.0] * length for _ in range(length)]
+        arrEnergySumX = [0.0] * length
+        arrEnergySumY = [0.0] * length
+
+        for i in range(length):
+            ux, uy = arrPositionX[i], arrPositionY[i]
+            dEx, dEy = 0.0, 0.0
+            for j in range(length):
+                if i != j:
+                    vx, vy = arrPositionX[j], arrPositionY[j]
+                    denom = 1.0 / sqrt((ux - vx) ** 2 + (uy - vy) ** 2)
+                    matEnergy[i][j] = [
+                        matStrength[i][j] * ((ux - vx) - matLength[i][j] * (ux - vx) * denom),
+                        matStrength[i][j] * ((uy - vy) - matLength[i][j] * (uy - vy) * denom)
+                    ]
+                    matEnergy[j][i] = matEnergy[i][j]
+                    dEx += matEnergy[i][j][0]
+                    dEy += matEnergy[i][j][1]
+            arrEnergySumX[i], arrEnergySumY[i] = dEx, dEy
+            
+        maxEnergyId, iteration, innerIteration = 0, 0, 0
+        dEX, dEY, delta = 0.0, 0.0, 0.0
+
+        while maxEnergy > threshold and maxIteration > iteration:
+            iteration += 1
+            maxEnergyId, maxEnergy, dEX, dEY = self.__highestEnergy(length, arrEnergySumX, arrEnergySumY, arrPositioned)
+            delta = maxEnergy
+            innerIteration = 0
+
+            while delta > innerThreshold and maxInnerIteration > innerIteration:
+                innerIteration += 1
+                self.__update(maxEnergyId, dEX, dEY, arrPositionX, arrPositionY, matLength, matStrength, length, matEnergy, arrEnergySumX, arrEnergySumY)
+                delta, dEX, dEY = self.__energy(maxEnergyId, arrEnergySumX, arrEnergySumY)
+
+        for i in range(length):
+            index = vertexIds[i]
+            vertex = self.vertices[index]
+            vertex.position.x, vertex.position.y = arrPositionX[i], arrPositionY[i]
+            vertex.positioned, vertex.forcePositioned = True, True
+
+    @staticmethod
+    def __energy(index, arrEnergySumX, arrEnergySumY):
+        'auxiliary function for kkLayout'
+        return [arrEnergySumX[index] * arrEnergySumX[index] + arrEnergySumY[index] * arrEnergySumY[index], arrEnergySumX[index], arrEnergySumY[index]]
+
+    @classmethod
+    def __highestEnergy(cls, length, arrEnergySumX, arrEnergySumY, arrPositioned):
+        'auxiliary function for kkLayout'
+        maxEnergy, maxEnergyId, maxDEX, maxDEY = 0.0, 0, 0.0, 0.0
+        for i in range(length):
+            delta, dEX, dEY = cls.__energy(index=i, arrEnergySumX= arrEnergySumX, arrEnergySumY=arrEnergySumY)
+            if delta > maxEnergy and arrPositioned[i] == False:
+                maxEnergy = delta
+                maxEnergyId = i
+                maxDEX, maxDEY = dEX, dEY
+        return maxEnergyId, maxEnergy, maxDEX, maxDEY
+
+    @staticmethod
+    def __update(index, dEX, dEY, arrPositionX, arrPositionY, matLength, matStrength, length, matEnergy, arrEnergySumX, arrEnergySumY):
+        'auxiliary function for kkLayout'
+        dxx, dyy, dxy= 0.0, 0.0, 0.0
+        ux, uy = arrPositionX[index], arrPositionY[index]
+        arrL = matLength[index]
+        arrK = matStrength[index]
+        
+        for i in range(length):
+            if i != index:
+                vx, vy = arrPositionX[i], arrPositionY[i]
+                l, k = arrL[i], arrK[i]
+                m = (ux - vx) * (ux - vx)
+                denom = 1.0 / ((m + (uy - vy) * (uy - vy)) ** 1.5)
+                dxx += k * (1 - l * (uy - vy) * (uy - vy) * denom)
+                dyy += k * (1 - l * m * denom)
+                dxy += k * (l * (ux - vx) * (uy - vy) * denom)
+
+        dxx = 0.1 if dxx == 0 else dxx
+        dyy = 0.1 if dyy == 0 else dyy
+        dxy = 0.1 if dxy == 0 else dxy
+        dy = (dEX / dxx + dEY / dxy) / (dxy / dxx - dyy / dxy)
+        dx = -(dxy * dy + dEX) / dxx
+        arrPositionX[index] += dx
+        arrPositionY[index] += dy
+        arrE = matEnergy[index]
+        dEX, dEY = 0.0, 0.0
+        ux, uy = arrPositionX[index], arrPositionY[index]
+
+        for i in range(length):
+            if index != i:
+                vx, vy = arrPositionX[i], arrPositionY[i]
+                prevEx, prevEy = arrE[i][0], arrE[i][1]
+                denom = 1.0 / sqrt((ux - vx) * (ux - vx) + (uy - vy) * (uy - vy))
+                dx = arrK[i] * ((ux - vx) - arrL[i] * (ux - vx) * denom)
+                dy = arrK[i] * ((uy - vy) - arrL[i] * (uy - vy) * denom)
+                arrE[i] = [dx, dy]
+                dEX += dx
+                dEY += dy
+                arrEnergySumX[i] += dx - prevEx
+                arrEnergySumY[i] += dy - prevEy
+
+        arrEnergySumX[index], arrEnergySumY[index] = dEX, dEY
