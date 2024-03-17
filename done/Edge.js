@@ -1,5 +1,4 @@
 class Edge {
-
     constructor(sourceId, targetId, weight = 1) {
         this.id = null;
         this.sourceId = sourceId;
@@ -10,12 +9,10 @@ class Edge {
         this.center = false;
         this.wedge = '';
     }
-
     setBondType(bondType) {
         this.bondType = bondType;
         this.weight = Edge.bonds[bondType];
     }
-
     static get bonds() {
         return {
             '-': 1,

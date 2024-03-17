@@ -3,7 +3,6 @@ const Vertex = require('./Vertex')
 const Ring = require('./Ring')
 
 class Atom {
-
     constructor(element, bondType = '-') {
         this.idx = null;
         this.element = element.length === 1 ? element.toUpperCase() : element;
@@ -35,11 +34,9 @@ class Atom {
         this.hasHydrogen = false;
         this.class = undefined;
     }
-
     addNeighbouringElement(element) {
         this.neighbouringElements.push(element);
     }
-
     attachPseudoElement(element, previousElement, hydrogenCount = 0, charge = 0) {
         if (hydrogenCount === null) {
             hydrogenCount = 0;
@@ -59,10 +56,8 @@ class Atom {
                 charge: charge
             };
         }
-
         this.hasAttachedPseudoElements = true;
     }
-
     getAttachedPseudoElements() {
         let ordered = {};
         let that = this;
@@ -71,15 +66,12 @@ class Atom {
         });
         return ordered;
     }
-
     getAttachedPseudoElementsCount() {
         return Object.keys(this.attachedPseudoElements).length;
     }
-
     isHeteroAtom() {
         return this.element !== 'C' && this.element !== 'H';
     }
-
     addAnchoredRing(ringId) {
         if (!ArrayHelper.contains(this.anchoredRings, {
             value: ringId
@@ -87,27 +79,21 @@ class Atom {
             this.anchoredRings.push(ringId);
         }
     }
-
     getRingbondCount() {
         return this.ringbonds.length;
     }
-
     backupRings() {
         this.originalRings = Array(this.rings.length);
-
         for (let i = 0; i < this.rings.length; i++) {
             this.originalRings[i] = this.rings[i];
         }
     }
-
     restoreRings() {
         this.rings = Array(this.originalRings.length);
-
         for (let i = 0; i < this.originalRings.length; i++) {
             this.rings[i] = this.originalRings[i];
         }
     }
-
     haveCommonRingbond(atomA, atomB) {
         for (let i = 0; i < atomA.ringbonds.length; i++) {
             for (let j = 0; j < atomB.ringbonds.length; j++) {
@@ -116,17 +102,14 @@ class Atom {
                 }
             }
         }
-
         return false;
     }
-
     neighbouringElementsEqual(arr) {
         if (arr.length !== this.neighbouringElements.length) {
             return false;
         }
         arr.sort();
         this.neighbouringElements.sort();
-
         for (var i = 0; i < this.neighbouringElements.length; i++) {
             if (arr[i] !== this.neighbouringElements[i]) {
                 return false;
@@ -134,15 +117,12 @@ class Atom {
         }
         return true;
     }
-
     getAtomicNumber() {
         return Atom.atomicNumbers[this.element];
     }
-
     getMaxBonds() {
         return Atom.maxBonds[this.element];
     }
-
     static get maxBonds() {
         return {
             'H': 1,
@@ -158,7 +138,6 @@ class Atom {
             'Br': 1
         };
     }
-
     static get atomicNumbers() {
         return {
             'H': 1,
@@ -287,7 +266,6 @@ class Atom {
             'Uuo': 118
         };
     }
-
     static get mass() {
         return {
             'H': 1,

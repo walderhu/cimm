@@ -3,7 +3,6 @@ class ThemeManager {
         this.colors = colors;
         this.theme = this.colors[theme];
     }
-
     getColor(key) {
         if (key) {
             key = key.toUpperCase();
@@ -13,7 +12,6 @@ class ThemeManager {
         }
         return this.theme['C'];
     }
-
     setTheme(theme) {
         if (this.colors.hasOwnProperty(theme)) {
             this.theme = this.colors[theme];

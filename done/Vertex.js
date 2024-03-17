@@ -4,7 +4,6 @@ const Vector2 = require('./Vector2')
 const Atom = require('./Atom')
 
 class Vertex {
-
     constructor(value, x = 0, y = 0) {
         this.id = null;
         this.value = value;
@@ -22,32 +21,23 @@ class Vertex {
         this.neighbouringElements = Array();
         this.forcePositioned = false;
     }
-
-
     setPosition(x, y) {
         this.position.x = x;
         this.position.y = y;
     }
-
-
     setPositionFromVector(v) {
         this.position.x = v.x;
         this.position.y = v.y;
     }
-
-
     addChild(vertexId) {
         this.children.push(vertexId);
         this.neighbours.push(vertexId);
         this.neighbourCount++;
     }
-
-
     addRingbondChild(vertexId, ringbondIndex) {
         this.children.push(vertexId);
         if (this.value.bracket) {
             let index = 1;
-
             if (this.id === 0 && this.value.bracket.hcount === 0) {
                 index = 0;
             }
@@ -77,21 +67,17 @@ class Vertex {
         }
         this.neighbourCount++;
     }
-
-
     setParentVertexId(parentVertexId) {
         this.neighbourCount++;
         this.parentVertexId = parentVertexId;
         this.neighbours.push(parentVertexId);
     }
-
     isTerminal() {
         if (this.value.hasAttachedPseudoElements) {
             return true;
         }
         return (this.parentVertexId === null && this.children.length < 2) || this.children.length === 0;
     }
-
     clone() {
         let clone = new Vertex(this.value, this.position.x, this.position.y);
         clone.id = this.id;
@@ -105,11 +91,9 @@ class Vertex {
         clone.forcePositioned = this.forcePositioned;
         return clone;
     }
-
     equals(vertex) {
         return this.id === vertex.id;
     }
-
     getAngle(referenceVector = null, returnAsDegrees = false) {
         let u = null;
         if (!referenceVector) {
@@ -122,7 +106,6 @@ class Vertex {
         }
         return u.angle();
     }
-
     getTextDirection(vertices, onlyHorizontal = false) {
         let neighbours = this.getDrawnNeighbours(vertices);
         let angles = Array();
@@ -142,7 +125,6 @@ class Vertex {
             let halfPi = Math.PI / 2.0;
             textAngle = Math.round(Math.round(textAngle / halfPi) * halfPi);
         }
-
         if (textAngle === 2) {
             return 'down';
         } else if (textAngle === -2) {
@@ -155,7 +137,6 @@ class Vertex {
             return 'down'; // default to down
         }
     }
-
     getNeighbours(vertexId = null) {
         if (vertexId === null) {
             return this.neighbours.slice();
@@ -166,10 +147,8 @@ class Vertex {
                 arr.push(this.neighbours[i]);
             }
         }
-
         return arr;
     }
-
     getDrawnNeighbours(vertices) {
         let arr = Array();
         for (let i = 0; i < this.neighbours.length; i++) {
@@ -179,14 +158,11 @@ class Vertex {
         }
         return arr;
     }
-
     getNeighbourCount() {
         return this.neighbourCount;
     }
-
     getSpanningTreeNeighbours(vertexId = null) {
         let neighbours = Array();
-
         for (let i = 0; i < this.spanningTreeChildren.length; i++) {
             if (vertexId === undefined || vertexId != this.spanningTreeChildren[i]) {
                 neighbours.push(this.spanningTreeChildren[i]);
@@ -199,7 +175,6 @@ class Vertex {
         }
         return neighbours;
     }
-
     getNextInRing(vertices, ringId, previousVertexId) {
         let neighbours = this.getNeighbours();
         for (let i = 0; i < neighbours.length; i++) {

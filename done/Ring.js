@@ -4,7 +4,6 @@ const Vertex = require('./Vertex')
 const RingConnection = require('./RingConnection')
 
 class Ring {
-
     constructor(members) {
         this.id = null;
         this.members = members;
@@ -21,7 +20,6 @@ class Ring {
         this.centralAngle = 0.0;
         this.canFlip = true;
     }
-
     clone() {
         let clone = new Ring(this.members);
         clone.id = this.id;
@@ -38,11 +36,9 @@ class Ring {
         clone.canFlip = this.canFlip;
         return clone;
     }
-
     getSize() {
         return this.members.length;
     }
-
     getPolygon(vertices) {
         let polygon = [];
         for (let i = 0; i < this.members.length; i++) {
@@ -50,11 +46,9 @@ class Ring {
         }
         return polygon;
     }
-
     getAngle() {
         return Math.PI - this.centralAngle;
     }
-
     eachMember(vertices, callback, startVertexId, previousVertexId) {
         startVertexId = startVertexId || startVertexId === 0 ? startVertexId : this.members[0];
         let current = startVertexId;
@@ -70,7 +64,6 @@ class Ring {
             max++;
         }
     }
-
     getOrderedNeighbours(ringConnections) {
         let orderedNeighbours = Array(this.neighbours.length);
         for (let i = 0; i < this.neighbours.length; i++) {
@@ -85,14 +78,12 @@ class Ring {
         });
         return orderedNeighbours;
     }
-
     isBenzeneLike(vertices) {
         let db = this.getDoubleBondCount(vertices);
         let length = this.members.length;
         return db === 3 && length === 6 ||
             db === 2 && length === 5;
     }
-
     getDoubleBondCount(vertices) {
         let doubleBondCount = 0;
         for (let i = 0; i < this.members.length; i++) {
@@ -103,7 +94,6 @@ class Ring {
         }
         return doubleBondCount;
     }
-
     contains(vertexId) {
         for (let i = 0; i < this.members.length; i++) {
             if (this.members[i] == vertexId) {

@@ -1,33 +1,27 @@
 function convertImage(img) {
     "use strict";
-
     function each(obj, fn) {
         var length = obj.length,
             likeArray = (length === 0 || (length > 0 && (length - 1) in obj)),
             i = 0;
-
         if (likeArray) {
             for (; i < length; i++) { if (fn.call(obj[i], i, obj[i]) === false) { break; } }
         } else {
             for (i in obj) { if (fn.call(obj[i], i, obj[i]) === false) { break; } }
         }
     }
-
     function componentToHex(c) {
         var hex = parseInt(c).toString(16);
         return hex.length == 1 ? "0" + hex : hex;
     }
-
     function getColor(r, g, b, a) {
         a = parseInt(a);
         if (a === undefined || a === 255) { return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b); }
         if (a === 0) { return false; }
         return 'rgba(' + r + ',' + g + ',' + b + ',' + (a / 255) + ')';
     }
-
     function makePathData(x, y, w) { return ('M' + x + ' ' + y + 'h' + w + ''); }
     function makePath(color, data) { return '<path stroke="' + color + '" d="' + data + '" />\n'; }
-
     function colorsToPaths(colors) {
         var output = "";
         each(colors, function (color, values) {
@@ -53,7 +47,6 @@ function convertImage(img) {
         });
         return output;
     }
-
     var getColors = function (img) {
         var colors = {},
             data = img.data,
@@ -75,16 +68,12 @@ function convertImage(img) {
         }
         return colors;
     }
-
     let colors = getColors(img);
     let paths = colorsToPaths(colors);
     let output = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -0.5 ' + img.width + ' ' + img.height + '" shape-rendering="crispEdges"><g shape-rendering="crispEdges">' + paths + '</g></svg>';
-
     var dummyDiv = document.createElement('div');
     dummyDiv.innerHTML = output;
-
     return dummyDiv.firstChild;
-
 }
 
 module.exports = convertImage

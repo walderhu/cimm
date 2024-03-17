@@ -16,8 +16,6 @@ class Graph {
         this._time = 0;
         this._init(parseTree);
     }
-
-
     _init(node, order = 0, parentVertexId = null, isBranch = false) {
         const element = node.atom.element ? node.atom.element : node.atom;
         let atom = new Atom(element, node.bond);
@@ -83,10 +81,6 @@ class Graph {
             this._init(node.next, node.branchCount + offset, vertex.id);
         }
     }
-
-
-
-
     clear() {
         this.vertices = Array();
         this.edges = Array();
@@ -343,16 +337,6 @@ class Graph {
             this.traverseTree(neighbours[i], vertexId, callback, maxDepth, ignoreFirst, depth + 1, visited);
         }
     }
-
-
-
-
-
-
-
-
-
-
     kkLayout(vertexIds, center, startVertexId, ring, bondLength,
         threshold = 0.1, innerThreshold = 0.1, maxIteration = 2000,
         maxInnerIteration = 50, maxEnergy = 1e9) {
@@ -545,7 +529,6 @@ class Graph {
             vertex.forcePositioned = true;
         }
     }
-
     _bridgeDfs(u, visited, disc, low, parent, adj, outBridges) {
         visited[u] = true;
         disc[u] = low[u] = ++this._time;
@@ -563,15 +546,6 @@ class Graph {
             }
         }
     }
-
-
-
-
-
-
-
-
-
     static getConnectedComponents(adjacencyMatrix) {
         let length = adjacencyMatrix.length;
         let visited = new Array(length);

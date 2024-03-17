@@ -1,7 +1,6 @@
 const Vector2 = require('./Vector2')
 
 class Line {
-
     constructor(from = new Vector2(0, 0), to = new Vector2(0, 0), elementFrom = null, elementTo = null, chiralFrom = false, chiralTo = false) {
         this.from = from;
         this.to = to;
@@ -10,22 +9,17 @@ class Line {
         this.chiralFrom = chiralFrom;
         this.chiralTo = chiralTo;
     }
-
     clone() {
         return new Line(this.from.clone(), this.to.clone(), this.elementFrom, this.elementTo);
     }
-
-
     getLength() {
         return Math.sqrt(Math.pow(this.to.x - this.from.x, 2) +
             Math.pow(this.to.y - this.from.y, 2));
     }
-
     getAngle() {
         let diff = Vector2.subtract(this.getRightVector(), this.getLeftVector());
         return diff.angle();
     }
-
     getRightVector() {
         if (this.from.x < this.to.x) {
             return this.to;
@@ -33,7 +27,6 @@ class Line {
             return this.from;
         }
     }
-
     getLeftVector() {
         if (this.from.x < this.to.x) {
             return this.from;
@@ -41,7 +34,6 @@ class Line {
             return this.to;
         }
     }
-
     getRightElement() {
         if (this.from.x < this.to.x) {
             return this.elementTo;
@@ -49,7 +41,6 @@ class Line {
             return this.elementFrom;
         }
     }
-
     getLeftElement() {
         if (this.from.x < this.to.x) {
             return this.elementFrom;
@@ -57,7 +48,6 @@ class Line {
             return this.elementTo;
         }
     }
-
     getRightChiral() {
         if (this.from.x < this.to.x) {
             return this.chiralTo;
@@ -65,7 +55,6 @@ class Line {
             return this.chiralFrom;
         }
     }
-
     getLeftChiral() {
         if (this.from.x < this.to.x) {
             return this.chiralFrom;
@@ -73,7 +62,6 @@ class Line {
             return this.chiralTo;
         }
     }
-
     setRightVector(x, y) {
         if (this.from.x < this.to.x) {
             this.to.x = x;
@@ -84,7 +72,6 @@ class Line {
         }
         return this;
     }
-
     setLeftVector(x, y) {
         if (this.from.x < this.to.x) {
             this.from.x = x;
@@ -95,13 +82,11 @@ class Line {
         }
         return this;
     }
-
     rotateToXAxis() {
         let left = this.getLeftVector();
         this.setRightVector(left.x + this.getLength(), left.y);
         return this;
     }
-
     rotate(theta) {
         let l = this.getLeftVector();
         let r = this.getRightVector();
@@ -112,7 +97,6 @@ class Line {
         this.setRightVector(x, y);
         return this;
     }
-
     shortenFrom(by) {
         let f = Vector2.subtract(this.to, this.from);
         f.normalize();
@@ -120,7 +104,6 @@ class Line {
         this.from.add(f);
         return this;
     }
-
     shortenTo(by) {
         let f = Vector2.subtract(this.from, this.to);
         f.normalize();
@@ -128,7 +111,6 @@ class Line {
         this.to.add(f);
         return this;
     }
-
     shortenRight(by) {
         if (this.from.x < this.to.x) {
             this.shortenTo(by);
@@ -137,7 +119,6 @@ class Line {
         }
         return this;
     }
-
     shortenLeft(by) {
         if (this.from.x < this.to.x) {
             this.shortenFrom(by);
@@ -146,8 +127,6 @@ class Line {
         }
         return this;
     }
-
-
     shorten(by) {
         let f = Vector2.subtract(this.from, this.to);
         f.normalize();

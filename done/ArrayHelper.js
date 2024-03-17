@@ -11,14 +11,12 @@ class ArrayHelper {
         }
         return out;
     }
-
     static equals(arrA, arrB) {
         if (arrA.length !== arrB.length) {
             return false;
         }
         let tmpA = arrA.slice().sort();
         let tmpB = arrB.slice().sort();
-
         for (var i = 0; i < tmpA.length; i++) {
             if (tmpA[i] !== tmpB[i]) {
                 return false;
@@ -26,7 +24,6 @@ class ArrayHelper {
         }
         return true;
     }
-
     static print(arr) {
         if (arr.length == 0) {
             return "";
@@ -38,13 +35,11 @@ class ArrayHelper {
         s = s.substring(0, s.length - 2);
         return s + ")";
     }
-
     static each(arr, callback) {
         for (let i = 0; i < arr.length; i++) {
             callback(arr[i]);
         }
     }
-
     static get(arr, property, value) {
         for (let i = 0; i < arr.length; i++) {
             if (arr[i][property] == value) {
@@ -52,7 +47,6 @@ class ArrayHelper {
             }
         }
     }
-
     static contains(arr, options) {
         if (!options.property && !options.func) {
             for (let i = 0; i < arr.length; i++) {
@@ -75,7 +69,6 @@ class ArrayHelper {
         }
         return false;
     }
-
     static intersection(arrA, arrB) {
         let intersection = new Array();
         for (let i = 0; i < arrA.length; i++) {
@@ -87,14 +80,12 @@ class ArrayHelper {
         }
         return intersection;
     }
-
     static unique(arr) {
         let contains = {};
         return arr.filter(function (i) {
             return contains[i] !== undefined ? false : (contains[i] = true);
         });
     }
-
     static count(arr, value) {
         let count = 0;
         for (let i = 0; i < arr.length; i++) {
@@ -104,7 +95,6 @@ class ArrayHelper {
         }
         return count;
     }
-
     static toggle(arr, value) {
         let newArr = Array();
         let removed = false;
@@ -120,34 +110,27 @@ class ArrayHelper {
         }
         return newArr;
     }
-
     static remove(arr, value) {
         let tmp = Array();
-
         for (let i = 0; i < arr.length; i++) {
             if (arr[i] !== value) {
                 tmp.push(arr[i]);
             }
         }
-
         return tmp;
     }
-
     static removeUnique(arr, value) {
         let index = arr.indexOf(value);
-
         if (index > -1) {
             arr.splice(index, 1);
         }
         return arr;
     }
-
     static removeAll(arrA, arrB) {
         return arrA.filter(function (item) {
             return arrB.indexOf(item) === -1;
         });
     }
-
     static merge(arrA, arrB) {
         let arr = new Array(arrA.length + arrB.length);
         for (let i = 0; i < arrA.length; i++) {
@@ -158,7 +141,6 @@ class ArrayHelper {
         }
         return arr;
     }
-
     static containsAll(arrA, arrB) {
         let containing = 0;
         for (let i = 0; i < arrA.length; i++) {
@@ -170,7 +152,6 @@ class ArrayHelper {
         }
         return containing === arrB.length;
     }
-
     static sortByAtomicNumberDesc(arr) {
         let map = arr.map(function (e, i) {
             return { index: i, value: e.atomicNumber.split(".").map(Number) };
@@ -178,7 +159,6 @@ class ArrayHelper {
         map.sort(function (a, b) {
             let min = Math.min(b.value.length, a.value.length);
             let i = 0;
-
             while (i < min && b.value[i] === a.value[i]) {
                 i++;
             }
@@ -190,12 +170,10 @@ class ArrayHelper {
             return arr[e.index];
         });
     }
-
     static deepCopy(arr) {
         let newArr = Array();
         for (let i = 0; i < arr.length; i++) {
             let item = arr[i];
-
             if (item instanceof Array) {
                 newArr[i] = ArrayHelper.deepCopy(item);
             } else {
