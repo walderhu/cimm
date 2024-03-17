@@ -546,50 +546,6 @@ class Graph {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     _bridgeDfs(u, visited, disc, low, parent, adj, outBridges) {
         visited[u] = true;
         disc[u] = low[u] = ++this._time;
@@ -607,6 +563,15 @@ class Graph {
             }
         }
     }
+
+
+
+
+
+
+
+
+
     static getConnectedComponents(adjacencyMatrix) {
         let length = adjacencyMatrix.length;
         let visited = new Array(length);

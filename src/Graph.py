@@ -6,7 +6,7 @@ from Ring import Ring
 from Atom import Atom
 
 from math import sin, cos, pow, sqrt
-from typing import List, Dict, Any, Callable, Final, Union
+from typing import List, Set, Any, Callable, Final, Union
 
 
 class Graph:
@@ -102,18 +102,15 @@ isometric A boolean indicating whether or not the SMILES associated with this gr
         target = self.vertices[edge.targetId]
         edge.id = len(self.edges)
         self.edges.append(edge)
-
+        
         self.vertexIdsToEdgeId[f'{edge.sourceId}_{edge.targetId}'] = edge.id
         self.vertexIdsToEdgeId[f'{edge.targetId}_{edge.sourceId}'] = edge.id
 
         edge.isPartOfAromaticRing = source.value.isPartOfAromaticRing and target.value.isPartOfAromaticRing
-
         source.value.bondCount += edge.weight
         target.value.bondCount += edge.weight
-
         source.edges.append(edge.id)
         target.edges.append(edge.id)
-
         return edge.id
 
     def getEdge(self, vertexIdA: float, vertexIdB: float) -> Union['Edge', None]:
@@ -150,8 +147,6 @@ isometric A boolean indicating whether or not the SMILES associated with this gr
             adjacencyMatrix[bridge[0]][bridge[1]] = 0
             adjacencyMatrix[bridge[1]][bridge[0]] = 0
         return adjacencyMatrix
-
-
 
     def getSubgraphAdjacencyMatrix(self, vertexIds: List[int]) -> List[List[int]]:
         'Get the adjacency matrix of a subgraph.'
@@ -233,7 +228,7 @@ calculating the distance matrix between all pairs of vertices in a graph"""
         self._time = 0
         for i in range(length):
             if visited[i] is False:
-                self._bridgeDfs(i, visited, disc, low, parent, adj, outBridges)
+                self.__bridgeDfs(i, visited, disc, low, parent, adj, outBridges)
         return outBridges
 
     def traverseBF(self, startVertexId: float, callback: Callable) -> None:
@@ -417,3 +412,69 @@ calculating the distance matrix between all pairs of vertices in a graph"""
                 arrEnergySumY[i] += dy - prevEy
 
         arrEnergySumX[index], arrEnergySumY[index] = dEX, dEY
+
+    def __bridgeDfs(self, u: int, visited: list, disc: list, low: list,\
+        parent: list, adj: List[List[int]], outBridges: list) -> None:
+        'PRIVATE FUNCTION used by getBridges().'
+        visited[u] = True
+        self._time += self._time
+        disc[u] = low[u] = self._time
+        for v in adj[u]:
+            if not visited[v]:
+                parent[v] = u
+                self.__bridgeDfs(v, visited, disc, low, parent, adj, outBridges)
+                low[u] = min(low[u], low[v])
+                if low[v] > disc[u]: 
+                    outBridges.append([u, v])
+            elif v != parent[u]:
+                low[u] = min(low[u], disc[v])
+
+    @staticmethod
+    def getConnectedComponents(adjacencyMatrix: List[List]) -> List[Set]:
+        'Returns the connected components of the graph.'
+        length = len(adjacencyMatrix)
+        visited = [False] * length
+        components = []
+        for u in range(length):
+            if visited[u] is False:
+                component = []
+                visited[u] = True
+                component.append(u)
+                Graph.__ccGetDfs(u, visited, adjacencyMatrix, component)
+                if len(component) > 1:
+                    components.append(component)
+        return components
+
+    @staticmethod
+    def getConnectedComponentCount(adjacencyMatrix: List[List]) -> int:
+        'Returns the number of connected components for the graph. '
+        length = len(adjacencyMatrix)
+        visited = [False] * length
+        count = 0
+        for u in range(length):
+            if visited[u] is False:
+                visited[u] = True
+                count += 1
+                Graph.__ccCountDfs(u, visited, adjacencyMatrix)
+        return count
+
+    @staticmethod
+    def __ccCountDfs(u: int, visited: List[bool], adjacencyMatrix: List[List]) -> None:
+        'PRIVATE FUNCTION used by getConnectedComponentCount().'
+        for v in range(len(adjacencyMatrix[u])):
+            c = adjacencyMatrix[u][v]
+            if c is False or visited[v] or u == v:
+                continue
+            visited[v] = True
+            Graph.__ccCountDfs(v, visited, adjacencyMatrix)
+
+    @staticmethod
+    def __ccGetDfs(u: int, visited: List[bool], adjacencyMatrix: List[List], component: list) -> None:
+        'PRIVATE FUNCTION used by getConnectedComponents().'
+        for v in range(len(adjacencyMatrix[u])):
+            c = adjacencyMatrix[u][v]
+            if c is False or visited[v] or u == v:
+                continue
+            visited[v] = True
+            component.append(v)
+            Graph.__ccGetDfs(v, visited, adjacencyMatrix, component)
