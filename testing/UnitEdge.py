@@ -5,7 +5,6 @@ import sys
 sys.path.append(r'/home/jesse/cimm/source')
 from Edge import Edge
 
-
 class TestAddFunction(unittest.TestCase):
     def __init__(self, methodName: str = "runTest") -> None:
         super().__init__(methodName)

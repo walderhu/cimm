@@ -7,11 +7,11 @@ clean:
 	@rm -rf $(TRASH) testing/$(TRASH) source/$(TRASH)
 
 gcov:
-	python3 -m coverage run -m pytest testing/$(TEST_FILES)
-	python3 -m coverage report
+	@python3 -m coverage run -m pytest testing/$(TEST_FILES)
+	@python3 -m coverage report
 
 html: 
-	python3 -m coverage run -m pytest testing/$(TEST_FILES)
+	@python3 -m coverage run -m pytest testing/$(TEST_FILES)
 	@python3 -m coverage html
 	@open htmlcov/index.html
 

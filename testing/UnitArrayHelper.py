@@ -1,7 +1,5 @@
 'Testing the ArrayHelper module'
-import unittest
-import execjs
-import sys
+import unittest, execjs, sys
 sys.path.append(r'/home/jesse/cimm/source')
 from ArrayHelper import ArrayHelper
 
