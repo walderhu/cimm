@@ -1,20 +1,17 @@
-TEST = _UnitArrayHelper.py
-ALL_FILES = *.py
-
+TRASH = __pycache__ .pytest_cache htmlcov .coverage
+TEST_FILES = UnitArrayHelper.py
 test:
-	@python3 _UnitAtom.py
-
-testing:
-	@python3 $(TEST)
+	@python3 testing/unit.py
 
 clean:
-	@rm -rf __pycache__ .pytest_cache htmlcov .coverage
+	@rm -rf $(TRASH) testing/$(TRASH) source/$(TRASH)
 
 gcov:
-	@python3 -m coverage run -m pytest $(TEST)
-	@python3 -m coverage report
+	python3 -m coverage run -m pytest testing/$(TEST_FILES)
+	python3 -m coverage report
 
-html: gcov
+html: 
+	python3 -m coverage run -m pytest testing/$(TEST_FILES)
 	@python3 -m coverage html
 	@open htmlcov/index.html
 
