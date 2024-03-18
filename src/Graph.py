@@ -19,13 +19,10 @@ isometric A boolean indicating whether or not the SMILES associated with this gr
 
     def __init__(self, parseTree: Any, isomeric: bool = False) -> None:
         'The constructor of the class Graph.'
-        self.vertices = []
-        self.edges = []
-        self.atomIdxToVertexId = []
+        self.vertices, self.edges, self.atomIdxToVertexId = [], [], []
         self.vertexIdsToEdgeId = {}
         self.isomeric = isomeric
-        self._atomIdx = 0
-        self._time = 0
+        self._atomIdx, self._time = 0, 0
         self.__init(parseTree)
 
     def __init(self, node: 'Graph', order: float = 0, parent_vertex_id: float = None, is_branch: bool = False):
