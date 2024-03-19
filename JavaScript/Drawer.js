@@ -1,5 +1,4 @@
-
-const SvgDrawer = require('./SvgDrawer')
+// const SvgDrawer = require('./SvgDrawer')
 class Drawer {
     constructor(options) {
         this.svgDrawer = new SvgDrawer(options);

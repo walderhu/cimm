@@ -17,9 +17,9 @@ class SvgDrawer {
     }
     draw(data, target, themeName = 'light', weights = null, infoOnly = false, highlight_atoms = [], weightsNormalized = false) {
         if (target === null || target === 'svg') {
-            target = document.createElementNS('http:
-            target.setAttribute('xmlns', 'http:
-            target.setAttribute('xmlns:xlink', 'http:
+            target = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            target.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            target.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink');
             target.setAttributeNS(null, 'width', this.opts.width);
             target.setAttributeNS(null, 'height', this.opts.height);
         } else if (target instanceof String) {
@@ -68,9 +68,8 @@ class SvgDrawer {
         } else {
             canvas = target;
         }
-        let svg = document.createElementNS('http:
-        svg.setAttribute('xmlns', 'http:
-        
+        let svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
         svg.setAttributeNS(null, 'viewBox', '0 0 ' + 500 + ' ' + 500);
         svg.setAttributeNS(null, 'width', 500 + '');
         svg.setAttributeNS(null, 'height', 500 + '');
@@ -81,10 +80,12 @@ class SvgDrawer {
         document.body.removeChild(svg);
         return target;
     }
+
     drawAromaticityRing(ring) {
         let svgWrapper = this.svgWrapper;
         svgWrapper.drawRing(ring.center.x, ring.center.y, ring.getSize());
     }
+
     drawEdges(debug) {
         let preprocessor = this.preprocessor,
             graph = preprocessor.graph,
@@ -101,15 +102,18 @@ class SvgDrawer {
                 }
             }
         });
+
         if (!this.bridgedRing) {
             for (var i = 0; i < rings.length; i++) {
                 let ring = rings[i];
+
                 if (preprocessor.isRingAromatic(ring)) {
                     this.drawAromaticityRing(ring);
                 }
             }
         }
     }
+
     drawEdge(edgeId, debug) {
         let preprocessor = this.preprocessor,
             opts = preprocessor.opts,
@@ -125,11 +129,13 @@ class SvgDrawer {
         let a = vertexA.position,
             b = vertexB.position,
             normals = preprocessor.getEdgeNormals(edge),
+
             sides = ArrayHelper.clone(normals);
         sides[0].multiplyScalar(10).add(a);
         sides[1].multiplyScalar(10).add(a);
         if (edge.bondType === '=' || preprocessor.getRingbondType(vertexA, vertexB) === '=' ||
             (edge.isPartOfAromaticRing && preprocessor.bridgedRing)) {
+
             let inRing = preprocessor.areVerticesInSameRing(vertexA, vertexB);
             let s = preprocessor.chooseSide(vertexA, vertexB, sides);
             if (inRing) {
@@ -137,6 +143,7 @@ class SvgDrawer {
                 let center = lcr.center;
                 normals[0].multiplyScalar(opts.bondSpacing);
                 normals[1].multiplyScalar(opts.bondSpacing);
+
                 let line = null;
                 if (center.sameSideAs(vertexA.position, vertexB.position, Vector2.add(a, normals[0]))) {
                     line = new Line(Vector2.add(a, normals[0]), Vector2.add(b, normals[0]), elementA, elementB);
@@ -144,9 +151,12 @@ class SvgDrawer {
                     line = new Line(Vector2.add(a, normals[1]), Vector2.add(b, normals[1]), elementA, elementB);
                 }
                 line.shorten(opts.bondLength - opts.shortBondLength * opts.bondLength);
+
                 if (edge.isPartOfAromaticRing) {
+
                     svgWrapper.drawLine(line, true);
                 } else {
+
                     svgWrapper.drawLine(line);
                 }
                 svgWrapper.drawLine(new Line(a, b, elementA, elementB));
@@ -181,6 +191,7 @@ class SvgDrawer {
             svgWrapper.drawLine(lineB);
             svgWrapper.drawLine(new Line(a, b, elementA, elementB));
         } else if (edge.bondType === '.') {
+
         } else {
             let isChiralCenterA = vertexA.value.isStereoCenter;
             let isChiralCenterB = vertexB.value.isStereoCenter;
@@ -197,6 +208,7 @@ class SvgDrawer {
             svgWrapper.drawDebugText(midpoint.x, midpoint.y, 'e: ' + edgeId);
         }
     }
+
     drawAtomHighlights(debug) {
         let preprocessor = this.preprocessor;
         let opts = preprocessor.opts;
@@ -214,6 +226,7 @@ class SvgDrawer {
             }
         }
     }
+
     drawVertices(debug) {
         let preprocessor = this.preprocessor,
             opts = preprocessor.opts,
@@ -232,9 +245,12 @@ class SvgDrawer {
             let dir = vertex.getTextDirection(graph.vertices, atom.hasAttachedPseudoElements);
             let isTerminal = opts.terminalCarbons || element !== 'C' || atom.hasAttachedPseudoElements ? vertex.isTerminal() : false;
             let isCarbon = atom.element === 'C';
+
             if (graph.vertices.length < 3) {
                 isCarbon = false;
             }
+
+
             if (atom.element === 'N' && atom.isPartOfAromaticRing) {
                 hydrogens = 0;
             }
@@ -248,6 +264,7 @@ class SvgDrawer {
             } else if ((atom.isDrawn && (!isCarbon || atom.drawExplicit || isTerminal || atom.hasAttachedPseudoElements)) || graph.vertices.length === 1) {
                 if (opts.atomVisualization === 'default') {
                     let attachedPseudoElements = atom.getAttachedPseudoElements();
+
                     if (atom.hasAttachedPseudoElements && graph.vertices.length === Object.keys(attachedPseudoElements).length + 1) {
                         dir = 'right';
                     }
@@ -257,6 +274,7 @@ class SvgDrawer {
                     svgWrapper.drawBall(vertex.position.x, vertex.position.y, element);
                 }
             } else if (vertex.getNeighbourCount() === 2 && vertex.forcePositioned == true) {
+
                 let a = graph.vertices[vertex.neighbours[0]].position;
                 let b = graph.vertices[vertex.neighbours[1]].position;
                 let angle = Vector2.threePointangle(vertex.position, a, b);
@@ -269,6 +287,7 @@ class SvgDrawer {
                 svgWrapper.drawDebugText(vertex.position.x, vertex.position.y, value);
             }
         }
+
         if (opts.debug) {
             for (var i = 0; i < rings.length; i++) {
                 let center = rings[i].center;
@@ -276,6 +295,7 @@ class SvgDrawer {
             }
         }
     }
+
     drawWeights(weights, weightsNormalized) {
         if (weights.every(w => w === 0)) {
             return;
@@ -299,12 +319,15 @@ class SvgDrawer {
         gd.draw();
         this.svgWrapper.addLayer(gd.getSVG());
     }
+
     getTotalOverlapScore() {
         return this.preprocessor.getTotalOverlapScore();
     }
+
     getMolecularFormula(graph = null) {
         return this.preprocessor.getMolecularFormula(graph);
     }
+
     multiplyNormals(normals, spacing) {
         normals[0].multiplyScalar(spacing);
         normals[1].multiplyScalar(spacing);

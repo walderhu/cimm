@@ -1,8 +1,8 @@
-const SvgDrawer = require('./SvgDrawer');
-const SvgWrapper = require('./SvgWrapper');
-const Options = require('./Options');
-const ThemeManager = require('./ThemeManager');
-const formulaToCommonName = require('./FormulaToCommonName');
+// const SvgDrawer = require('./SvgDrawer');
+// const SvgWrapper = require('./SvgWrapper');
+// const Options = require('./Options');
+// const ThemeManager = require('./ThemeManager');
+// const formulaToCommonName = require('./FormulaToCommonName');
 class ReactionDrawer {
     /**
      * The constructor for the class ReactionDrawer.
